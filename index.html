@@ -8,34 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#EDE6D6;
-    --paper-soft:#F4EFE3;
-    --card:#FBF8F1;
-    --ink:#232323;
-    --ink-soft:#6b6356;
-    --navy:#2B3A4A;
-    --green:#3F6B4F;
-    --green-bg:#E1EAE3;
-    --red:#B5402C;
-    --red-bg:#F6E2DC;
-    --gold:#A9711F;
-    --gold-bg:#F1E3C5;
-    --line:#cabd9c;
-    --line-soft:#e0d6ba;
-    --radius:14px;
+    --paper:#EDE6D6; --paper-soft:#F4EFE3; --card:#FBF8F1;
+    --ink:#232323; --ink-soft:#6b6356; --navy:#2B3A4A;
+    --green:#3F6B4F; --green-bg:#E1EAE3; --red:#B5402C; --red-bg:#F6E2DC;
+    --gold:#A9711F; --gold-bg:#F1E3C5; --plum:#6C4F6B; --plum-bg:#EAE1E8;
+    --line:#cabd9c; --line-soft:#e0d6ba; --radius:14px;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--paper);
-    background-image:radial-gradient(circle at 1px 1px, rgba(35,35,35,0.05) 1px, transparent 0);
-    background-size:18px 18px;
-    color:var(--ink);
-    font-family:'Noto Sans TC', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
+  body{margin:0;background:var(--paper);background-image:radial-gradient(circle at 1px 1px, rgba(35,35,35,0.05) 1px, transparent 0);background-size:18px 18px;color:var(--ink);font-family:'Noto Sans TC', sans-serif;-webkit-font-smoothing:antialiased;}
   .mono{font-family:'Roboto Mono', monospace;}
-  .app{max-width:960px;margin:0 auto;padding:20px 16px 80px;}
+  .app{max-width:980px;margin:0 auto;padding:20px 16px 80px;}
 
   .hero{display:flex;align-items:center;gap:14px;padding:18px 0 14px;border-bottom:2px dashed var(--line);margin-bottom:18px;}
   .tag-mark{flex:0 0 auto;width:40px;height:40px;border-radius:6px 16px 6px 6px;background:var(--navy);position:relative;transform:rotate(-8deg);}
@@ -49,15 +31,19 @@
   .panel-title .eyebrow{font-size:11px;color:var(--ink-soft);letter-spacing:1px;}
   .panel-sub{font-size:12px;color:var(--ink-soft);margin:-6px 0 12px;}
 
+  .template-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .template-row select, .template-row input[type=text]{flex:1;min-width:160px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Noto Sans TC',sans-serif;background:#fff;}
+
   .settings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 14px;}
   @media(max-width:520px){ .settings-grid{grid-template-columns:1fr;} }
   .field{display:flex;flex-direction:column;gap:5px;}
+  .field.full{grid-column:1/-1;}
   .field label{font-size:12px;color:var(--ink-soft);}
   .field .input-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden;}
   .field .input-wrap span{padding:0 8px;font-size:12px;color:var(--ink-soft);background:var(--paper-soft);align-self:stretch;display:flex;align-items:center;border-right:1px solid var(--line);}
   .field input{border:none;outline:none;padding:9px 10px;font-size:14px;width:100%;font-family:'Roboto Mono',monospace;background:transparent;}
+  .field .hint{font-size:11px;color:var(--ink-soft);}
 
-  /* dynamic list rows */
   .list-block{margin-top:14px;}
   .list-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
   .list-block-head span.list-title{font-size:12px;color:var(--ink-soft);font-weight:700;}
@@ -84,8 +70,7 @@
   .summary-bar.loss{background:var(--red-bg);border-color:var(--red);}
   .summary-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
   .summary-status{font-size:15px;font-weight:700;}
-  .summary-status.profit{color:var(--green);}
-  .summary-status.loss{color:var(--red);}
+  .summary-status.profit{color:var(--green);} .summary-status.loss{color:var(--red);}
   .summary-numbers{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);}
   .summary-numbers b{display:block;font-size:15px;color:var(--ink);font-family:'Roboto Mono',monospace;}
   .summary-extra{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line-soft);font-size:12px;color:var(--ink-soft);display:flex;gap:18px;flex-wrap:wrap;}
@@ -96,7 +81,7 @@
   button{font-family:inherit;cursor:pointer;}
   .add-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;}
   .add-btn:hover{opacity:0.9;}
-  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
   .price-tag-card{position:relative;background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:16px 14px 14px;}
   .tag-hole{position:absolute;top:-7px;left:18px;width:14px;height:14px;background:var(--paper);border:1px dashed var(--line);border-radius:50%;}
   .card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
@@ -110,11 +95,24 @@
   .field-row .input-wrap span{padding:0 6px;font-size:11px;}
 
   .floor-block{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding:10px;border-radius:8px;background:var(--paper-soft);}
-  .floor-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;}
+  .floor-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:8px;flex-wrap:wrap;}
   .floor-line .label{color:var(--ink-soft);}
   .floor-line .value{font-size:14px;font-weight:700;}
   .floor-line.hard .value{color:var(--red);}
   .floor-line.soft .value{color:var(--gold);}
+  .floor-line.staff .value{color:var(--plum);}
+  .floor-line.staff .sub{font-size:11px;font-weight:500;color:var(--ink-soft);}
+  .staff-block{margin-bottom:12px;padding:10px;border-radius:8px;background:var(--plum-bg);}
+  .staff-block-head{font-size:11px;font-weight:700;color:var(--plum);letter-spacing:0.5px;margin-bottom:6px;}
+  .staff-block .field{margin-top:8px;}
+  .staff-block .field label{font-size:11px;color:var(--plum);}
+  .staff-block .input-wrap{background:#fff;}
+
+  .summary-bar.staff-summary{border-color:var(--plum);background:var(--plum-bg);margin-bottom:18px;}
+  .summary-bar.staff-summary .summary-status{color:var(--plum);}
+  .summary-bar.staff-summary .summary-status.profit{color:var(--green);}
+  .summary-bar.staff-summary .summary-status.loss{color:var(--red);}
+  .summary-block-label{font-size:11px;font-weight:700;color:var(--ink-soft);letter-spacing:1px;margin:0 2px 6px;}
 
   .promo-block{border-top:1px dashed var(--line-soft);padding-top:12px;}
   .promo-label{font-size:11px;color:var(--ink-soft);margin-bottom:6px;display:flex;justify-content:space-between;}
@@ -124,6 +122,29 @@
   .result-badge.profit{background:var(--green-bg);color:var(--green);}
   .result-badge.loss{background:var(--red-bg);color:var(--red);}
   .result-badge .diff-note{font-size:11px;font-weight:500;color:var(--ink-soft);}
+
+  details.adv-promo{margin-top:12px;border-top:1px dashed var(--line-soft);padding-top:10px;}
+  details.adv-promo summary{font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;list-style:none;}
+  details.adv-promo summary::-webkit-details-marker{display:none;}
+  details.adv-promo summary::before{content:'▸ ';}
+  details.adv-promo[open] summary::before{content:'▾ ';}
+  .adv-promo-note{font-size:11px;color:var(--ink-soft);margin:6px 0 10px;line-height:1.5;}
+  .promo-type-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+  .promo-type-btn{flex:1;min-width:80px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:7px;padding:7px 6px;font-size:11.5px;font-weight:700;}
+  .promo-type-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .promo-form-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;margin-bottom:8px;}
+  .promo-form-row .num-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:7px;background:#fff;overflow:hidden;width:80px;}
+  .promo-form-row .num-wrap input{border:none;outline:none;padding:6px 7px;font-size:13px;width:100%;font-family:'Roboto Mono',monospace;}
+  .promo-form-row .num-wrap span{padding:0 6px;font-size:11px;color:var(--ink-soft);background:var(--paper-soft);align-self:stretch;display:flex;align-items:center;}
+  .promo-result{background:var(--paper-soft);border-radius:8px;padding:9px 10px;font-size:12px;line-height:1.7;margin-top:6px;}
+  .promo-result b{font-family:'Roboto Mono',monospace;}
+  .promo-result .ok{color:var(--green);} .promo-result .bad{color:var(--red);}
+  .tier-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;margin-bottom:6px;padding:7px 8px;background:var(--paper-soft);border-radius:7px;}
+  .tier-row .num-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden;width:64px;}
+  .tier-row .num-wrap input{border:none;outline:none;padding:5px 6px;font-size:12px;width:100%;font-family:'Roboto Mono',monospace;}
+  .tier-row .tier-result{margin-left:auto;font-family:'Roboto Mono',monospace;font-weight:700;}
+  .tier-row .tier-result.ok{color:var(--green);} .tier-row .tier-result.bad{color:var(--red);}
+  .tier-row .row-del{border:none;background:transparent;color:var(--ink-soft);font-size:14px;}
 
   .empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px;border:1px dashed var(--line);border-radius:var(--radius);}
   footer{margin-top:30px;text-align:center;}
@@ -141,15 +162,26 @@
     <div class="tag-mark"></div>
     <div>
       <h1>快閃檔期 損益計算機</h1>
-      <p>把抽成、手續費、固定成本、包底營業額全部套進去，抓出每件商品賠錢底線</p>
+      <p>抽成、手續費、固定成本、包底、員工優惠、組合促銷，全部套進去看每件商品的底線</p>
     </div>
   </div>
 
   <div class="panel">
-    <div class="panel-title">
-      <h2>通路基本條件</h2>
-      <span class="eyebrow">CHANNEL TERMS</span>
+    <div class="panel-title"><h2>通路範本</h2><span class="eyebrow">PRESETS</span></div>
+    <div class="panel-sub">不同百貨／檔期條件不一樣，存成範本下次直接套用，不用重填下面整組設定。</div>
+    <div class="template-row">
+      <select id="templateSelect"><option value="">— 選擇已存範本 —</option></select>
+      <button class="mini-add-btn" id="applyTemplateBtn">套用範本</button>
+      <button class="mini-add-btn" id="deleteTemplateBtn">刪除</button>
     </div>
+    <div class="template-row">
+      <input type="text" id="templateNameInput" placeholder="範本名稱，例如：夢時代-正經人">
+      <button class="add-btn" id="saveTemplateBtn">另存為範本</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><h2>通路基本條件</h2><span class="eyebrow">CHANNEL TERMS</span></div>
     <div class="settings-grid">
       <div class="field">
         <label>主要抽成率</label>
@@ -166,6 +198,11 @@
       <div class="field">
         <label>目標營業額（參考用，不影響試算）</label>
         <div class="input-wrap"><span>NT$</span><input type="number" id="targetRevenue" min="0" step="1000"></div>
+      </div>
+      <div class="field full">
+        <label>百貨員工優惠折扣（廠商全額吸收，套用在下方每張商品卡）</label>
+        <div class="input-wrap" style="max-width:220px;"><input type="number" id="staffDiscount" min="0" max="90" step="1"><span>%</span></div>
+        <span class="hint">例如填 20，代表員工用 8 折購買，折扣全部由你吸收，百貨仍照抽成率收費。</span>
       </div>
     </div>
 
@@ -194,10 +231,9 @@
     </div>
   </div>
 
+  <div class="summary-block-label">零售總結</div>
   <div class="summary-bar" id="summaryBar">
-    <div class="summary-top">
-      <span class="summary-status" id="summaryStatus">尚未輸入商品資料</span>
-    </div>
+    <div class="summary-top"><span class="summary-status" id="summaryStatus">尚未輸入商品資料</span></div>
     <div class="summary-numbers">
       <div>預估總營收<b class="mono" id="sumRevenue">NT$ 0</b></div>
       <div>預估總毛利（已扣抽成手續費）<b class="mono" id="sumGrossProfit">NT$ 0</b></div>
@@ -207,6 +243,16 @@
     <div class="summary-extra" id="summaryExtra"></div>
   </div>
 
+  <div class="summary-block-label">員工優惠總結（廠商全額吸收，獨立計算，不影響上方零售打平）</div>
+  <div class="summary-bar staff-summary" id="staffSummaryBar">
+    <div class="summary-top"><span class="summary-status" id="staffSummaryStatus">尚未輸入員工銷量</span></div>
+    <div class="summary-numbers">
+      <div>員工優惠預估營業額<b class="mono" id="staffSumRevenue">NT$ 0</b></div>
+      <div>員工優惠預估毛利<b class="mono" id="staffSumGrossProfit">NT$ 0</b></div>
+      <div>員工預估件數<b class="mono" id="staffSumQty">0</b></div>
+    </div>
+  </div>
+
   <div class="section-header">
     <h2>商品損平表</h2>
     <button class="add-btn" id="addProductBtn">＋ 新增商品</button>
@@ -214,9 +260,7 @@
 
   <div id="loadingRow" class="loading-row">載入資料中…</div>
   <div class="products-grid" id="productsGrid" style="display:none;"></div>
-  <div class="empty-state" id="emptyState" style="display:none;">
-    還沒有商品，按上方「新增商品」開始建立你的損平表
-  </div>
+  <div class="empty-state" id="emptyState" style="display:none;">還沒有商品，按上方「新增商品」開始建立你的損平表</div>
 
   <footer>
     <button class="reset-btn" id="resetBtn">清除全部資料</button>
@@ -228,12 +272,11 @@
 <script>
 (function(){
   const STORAGE_KEY = 'popup-pricing-data';
-  let state = {
-    settings: {
-      commissionRate: 19,
-      periodDays: 14,
-      guaranteedRevenue: 100000,
-      targetRevenue: 400000,
+
+  function defaultSettings(){
+    return {
+      commissionRate: 19, periodDays: 14, guaranteedRevenue: 100000, targetRevenue: 400000,
+      staffDiscount: 0,
       extraPercentFees: [
         { id:'f1', label:'信用卡／行動支付手續費', percent: 2.5 },
         { id:'f2', label:'公區管理費', percent: 1 },
@@ -246,30 +289,24 @@
         { id:'c3', label:'公區清潔費', amount: 1000 },
         { id:'c4', label:'倉庫租金費', amount: 2000 }
       ]
-    },
-    products: []
-  };
+    };
+  }
+
+  let state = { settings: defaultSettings(), products: [], templates: [] };
   let saveTimer = null;
-  let nextProductIdCounter = 1;
-  let nextFeeIdCounter = 5;
-  let nextCostIdCounter = 5;
+  let nextProductIdCounter = 1, nextFeeIdCounter = 5, nextCostIdCounter = 5, nextTierIdCounter = 1, nextTemplateIdCounter = 1;
 
   const $ = (sel, root) => (root||document).querySelector(sel);
 
-  function fmt(n){
-    n = Math.round(n || 0);
-    return 'NT$ ' + n.toLocaleString('en-US');
-  }
-  function fmtPlain(n){
-    n = Math.round(n || 0);
-    return n.toLocaleString('en-US');
-  }
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
+  function fmt(n){ n = Math.round(n||0); return 'NT$ ' + n.toLocaleString('en-US'); }
+  function fmtPlain(n){ n = Math.round(n||0); return n.toLocaleString('en-US'); }
+  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   function newProduct(){
-    return { id: 'p' + (nextProductIdCounter++), name:'新商品', cost:0, price:0, testPrice:0, estQty:1 };
+    return {
+      id:'p'+(nextProductIdCounter++), name:'新商品', cost:0, price:0, testPrice:0, estQty:1, staffEstQty:0,
+      promo:{ type:'none', bxgy:{payQty:2,freeQty:1}, tiers:[], addon:{threshold:3, addonPrice:0} }
+    };
   }
 
   // ---------- persistence (browser localStorage, for self-hosted use) ----------
@@ -280,21 +317,30 @@
         const parsed = JSON.parse(raw);
         if(parsed.settings){
           const s = parsed.settings;
-          // migrate from older single-field version if present
-          if(!Array.isArray(s.extraPercentFees) && !Array.isArray(s.fixedCostItems) && (s.staffSalary !== undefined || s.otherFixedCost !== undefined)){
+          if(!Array.isArray(s.extraPercentFees) && !Array.isArray(s.fixedCostItems) && (s.staffSalary!==undefined || s.otherFixedCost!==undefined)){
             s.extraPercentFees = [];
             s.fixedCostItems = [
               { id:'c1', label:'人力薪水（櫃姐）', amount: Number(s.staffSalary)||0 },
               { id:'c2', label:'其他固定成本', amount: Number(s.otherFixedCost)||0 }
             ];
-            s.guaranteedRevenue = 0;
-            s.targetRevenue = 0;
+            s.guaranteedRevenue = 0; s.targetRevenue = 0;
           }
-          state.settings = Object.assign({}, state.settings, s);
+          state.settings = Object.assign(defaultSettings(), s);
           if(!Array.isArray(state.settings.extraPercentFees)) state.settings.extraPercentFees = [];
           if(!Array.isArray(state.settings.fixedCostItems)) state.settings.fixedCostItems = [];
+          if(state.settings.staffDiscount === undefined) state.settings.staffDiscount = 0;
         }
-        if(Array.isArray(parsed.products)) state.products = parsed.products;
+        if(Array.isArray(parsed.products)){
+          state.products = parsed.products.map(p=>{
+            if(!p.promo) p.promo = { type:'none', bxgy:{payQty:2,freeQty:1}, tiers:[], addon:{threshold:3, addonPrice:0} };
+            if(!Array.isArray(p.promo.tiers)) p.promo.tiers = [];
+            if(!p.promo.bxgy) p.promo.bxgy = {payQty:2,freeQty:1};
+            if(!p.promo.addon) p.promo.addon = {threshold:3, addonPrice:0};
+            if(p.staffEstQty === undefined) p.staffEstQty = 0;
+            return p;
+          });
+        }
+        if(Array.isArray(parsed.templates)) state.templates = parsed.templates;
 
         let maxP=0; state.products.forEach(p=>{const n=parseInt(String(p.id).replace('p',''),10); if(!isNaN(n)&&n>maxP)maxP=n;});
         nextProductIdCounter = maxP+1;
@@ -302,177 +348,218 @@
         nextFeeIdCounter = maxF+1;
         let maxC=0; state.settings.fixedCostItems.forEach(c=>{const n=parseInt(String(c.id).replace('c',''),10); if(!isNaN(n)&&n>maxC)maxC=n;});
         nextCostIdCounter = maxC+1;
+        let maxT=0; state.templates.forEach(t=>{const n=parseInt(String(t.id).replace('tpl',''),10); if(!isNaN(n)&&n>maxT)maxT=n;});
+        nextTemplateIdCounter = maxT+1;
+        let maxTier=0;
+        state.products.forEach(p=> p.promo.tiers.forEach(t=>{const n=parseInt(String(t.id).replace('t',''),10); if(!isNaN(n)&&n>maxTier)maxTier=n;}));
+        nextTierIdCounter = maxTier+1;
       }
     }catch(e){ /* start fresh */ }
   }
 
-  function scheduleSave(){
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveData, 500);
-  }
+  function scheduleSave(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveData, 500); }
   async function saveData(){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
     catch(e){ console.error('儲存失敗', e); }
   }
 
-  // ---------- calculations ----------
+  // ---------- core calculations ----------
   function getTotalPercentRate(){
     let rate = Number(state.settings.commissionRate)||0;
     state.settings.extraPercentFees.forEach(f=> rate += Number(f.percent)||0);
     return Math.min(95, Math.max(0, rate));
   }
-  function getFixedCostBase(){
-    return state.settings.fixedCostItems.reduce((s,i)=> s+(Number(i.amount)||0), 0);
-  }
-  function getTotalEstimatedRevenue(){
-    return state.products.reduce((s,p)=> s + (Number(p.testPrice)||0)*(Number(p.estQty)||0), 0);
-  }
-  function getTotalQty(){
-    return state.products.reduce((s,p)=> s + (Number(p.estQty)||0), 0);
-  }
+  function getFixedCostBase(){ return state.settings.fixedCostItems.reduce((s,i)=> s+(Number(i.amount)||0), 0); }
+  function getTotalEstimatedRevenue(){ return state.products.reduce((s,p)=> s + (Number(p.testPrice)||0)*(Number(p.estQty)||0), 0); }
+  function getTotalQty(){ return state.products.reduce((s,p)=> s + (Number(p.estQty)||0), 0); }
   function getGuaranteedGap(){
     const rev = getTotalEstimatedRevenue();
     const guaranteed = Number(state.settings.guaranteedRevenue)||0;
     const commissionRate = Number(state.settings.commissionRate)||0;
     return Math.max(0, guaranteed - rev) * (commissionRate/100);
   }
-  function getTotalFixedCost(){
-    return getFixedCostBase() + getGuaranteedGap();
+  function getTotalFixedCost(){ return getFixedCostBase() + getGuaranteedGap(); }
+  function getFixedCostPerUnit(){ const qty=getTotalQty(); return qty<=0 ? 0 : getTotalFixedCost()/qty; }
+  function hardFloor(cost){ return cost / (1 - getTotalPercentRate()/100); }
+  function softFloor(cost, fixedCostPerUnit){ return (cost + fixedCostPerUnit) / (1 - getTotalPercentRate()/100); }
+  function unitProfit(testPrice, cost){ return testPrice * (1 - getTotalPercentRate()/100) - cost; }
+  function getStaffPrice(p){
+    const staffDiscount = Number(state.settings.staffDiscount)||0;
+    return (Number(p.price)||0) * (1-staffDiscount/100);
   }
-  function getFixedCostPerUnit(){
-    const qty = getTotalQty();
-    if(qty<=0) return 0;
-    return getTotalFixedCost()/qty;
-  }
-  function hardFloor(cost){
+  function getStaffUnitProfit(p){ return unitProfit(getStaffPrice(p), p.cost); }
+  function getTotalStaffQty(){ return state.products.reduce((s,p)=> s + (Number(p.staffEstQty)||0), 0); }
+  function getTotalStaffRevenue(){ return state.products.reduce((s,p)=> s + getStaffPrice(p)*(Number(p.staffEstQty)||0), 0); }
+  function getTotalStaffGrossProfit(){ return state.products.reduce((s,p)=> s + getStaffUnitProfit(p)*(Number(p.staffEstQty)||0), 0); }
+
+  // ---------- bundle calculations ----------
+  function calcBxgy(product){
+    const X = Math.max(0, Number(product.promo.bxgy.payQty)||0);
+    const Y = Math.max(0, Number(product.promo.bxgy.freeQty)||0);
+    const totalUnits = X + Y;
+    if(totalUnits<=0) return null;
+    const revenue = X * (Number(product.price)||0);
     const rate = getTotalPercentRate();
-    return cost / (1 - rate/100);
+    const netRevenue = revenue * (1-rate/100);
+    const totalCost = totalUnits * (Number(product.cost)||0);
+    const profit = netRevenue - totalCost;
+    return { totalUnits, revenue, netRevenue, totalCost, profit, avgPrice: revenue/totalUnits, avgProfit: profit/totalUnits };
   }
-  function softFloor(cost, fixedCostPerUnit){
+  function calcAddon(product){
+    const X = Math.max(0, Number(product.promo.addon.threshold)||0);
+    const addonPrice = Math.max(0, Number(product.promo.addon.addonPrice)||0);
+    const totalUnits = X + 1;
+    const revenue = X*(Number(product.price)||0) + addonPrice;
     const rate = getTotalPercentRate();
-    return (cost + fixedCostPerUnit) / (1 - rate/100);
-  }
-  function unitProfit(testPrice, cost){
-    const rate = getTotalPercentRate();
-    return testPrice * (1 - rate/100) - cost;
+    const netRevenue = revenue*(1-rate/100);
+    const totalCost = totalUnits*(Number(product.cost)||0);
+    const profit = netRevenue - totalCost;
+    const addonUnitProfit = unitProfit(addonPrice, product.cost);
+    return { totalUnits, revenue, netRevenue, totalCost, profit, avgPrice: revenue/totalUnits, avgProfit: profit/totalUnits, addonUnitProfit };
   }
 
-  // ---------- settings: fee / cost list rendering ----------
+  // ---------- settings: fee / cost list ----------
   function feeRowTemplate(f){
-    return `
-      <div class="list-row" data-fee-id="${f.id}">
-        <input type="text" data-fee-field="label" value="${escapeHtml(f.label)}" placeholder="費用名稱">
-        <div class="num-wrap"><input type="number" min="0" step="0.1" data-fee-field="percent" value="${f.percent}"><span>%</span></div>
-        <button class="row-del" data-fee-action="delete" title="刪除">×</button>
-      </div>`;
+    return `<div class="list-row" data-fee-id="${f.id}">
+      <input type="text" data-fee-field="label" value="${escapeHtml(f.label)}" placeholder="費用名稱">
+      <div class="num-wrap"><input type="number" min="0" step="0.1" data-fee-field="percent" value="${f.percent}"><span>%</span></div>
+      <button class="row-del" data-fee-action="delete" title="刪除">×</button></div>`;
   }
   function costRowTemplate(c){
-    return `
-      <div class="list-row" data-cost-id="${c.id}">
-        <input type="text" data-cost-field="label" value="${escapeHtml(c.label)}" placeholder="成本名稱">
-        <div class="num-wrap"><span>$</span><input type="number" min="0" step="100" data-cost-field="amount" value="${c.amount}"></div>
-        <button class="row-del" data-cost-action="delete" title="刪除">×</button>
-      </div>`;
+    return `<div class="list-row" data-cost-id="${c.id}">
+      <input type="text" data-cost-field="label" value="${escapeHtml(c.label)}" placeholder="成本名稱">
+      <div class="num-wrap"><span>$</span><input type="number" min="0" step="100" data-cost-field="amount" value="${c.amount}"></div>
+      <button class="row-del" data-cost-action="delete" title="刪除">×</button></div>`;
   }
   function renderFeeList(){
     const el = $('#feeList');
-    if(state.settings.extraPercentFees.length===0){
-      el.innerHTML = '<div class="list-empty">目前沒有額外%費用</div>';
-    }else{
-      el.innerHTML = state.settings.extraPercentFees.map(feeRowTemplate).join('');
-    }
+    el.innerHTML = state.settings.extraPercentFees.length===0 ? '<div class="list-empty">目前沒有額外%費用</div>' : state.settings.extraPercentFees.map(feeRowTemplate).join('');
   }
   function renderCostList(){
     const el = $('#costList');
-    if(state.settings.fixedCostItems.length===0){
-      el.innerHTML = '<div class="list-empty">目前沒有固定成本項目</div>';
-    }else{
-      el.innerHTML = state.settings.fixedCostItems.map(costRowTemplate).join('');
-    }
+    el.innerHTML = state.settings.fixedCostItems.length===0 ? '<div class="list-empty">目前沒有固定成本項目</div>' : state.settings.fixedCostItems.map(costRowTemplate).join('');
   }
-
   function bindFeeListEvents(){
     const el = $('#feeList');
-    el.addEventListener('input', (e)=>{
-      const row = e.target.closest('.list-row');
-      if(!row) return;
-      const id = row.dataset.feeId;
-      const f = state.settings.extraPercentFees.find(x=>x.id===id);
-      if(!f) return;
-      const field = e.target.dataset.feeField;
-      if(field==='label') f.label = e.target.value;
-      else if(field==='percent') f.percent = e.target.value==='' ? 0 : Number(e.target.value);
-      recomputeAll();
-      scheduleSave();
+    el.addEventListener('input',(e)=>{
+      const row=e.target.closest('.list-row'); if(!row) return;
+      const f=state.settings.extraPercentFees.find(x=>x.id===row.dataset.feeId); if(!f) return;
+      const field=e.target.dataset.feeField;
+      if(field==='label') f.label=e.target.value; else if(field==='percent') f.percent = e.target.value===''?0:Number(e.target.value);
+      recomputeAll(); scheduleSave();
     });
-    el.addEventListener('click', (e)=>{
-      const btn = e.target.closest('[data-fee-action="delete"]');
-      if(!btn) return;
-      const row = btn.closest('.list-row');
+    el.addEventListener('click',(e)=>{
+      const btn=e.target.closest('[data-fee-action="delete"]'); if(!btn) return;
+      const row=btn.closest('.list-row');
       state.settings.extraPercentFees = state.settings.extraPercentFees.filter(x=>x.id!==row.dataset.feeId);
-      renderFeeList();
-      recomputeAll();
-      scheduleSave();
+      renderFeeList(); recomputeAll(); scheduleSave();
     });
   }
   function bindCostListEvents(){
     const el = $('#costList');
-    el.addEventListener('input', (e)=>{
-      const row = e.target.closest('.list-row');
-      if(!row) return;
-      const id = row.dataset.costId;
-      const c = state.settings.fixedCostItems.find(x=>x.id===id);
-      if(!c) return;
-      const field = e.target.dataset.costField;
-      if(field==='label') c.label = e.target.value;
-      else if(field==='amount') c.amount = e.target.value==='' ? 0 : Number(e.target.value);
-      recomputeAll();
-      scheduleSave();
+    el.addEventListener('input',(e)=>{
+      const row=e.target.closest('.list-row'); if(!row) return;
+      const c=state.settings.fixedCostItems.find(x=>x.id===row.dataset.costId); if(!c) return;
+      const field=e.target.dataset.costField;
+      if(field==='label') c.label=e.target.value; else if(field==='amount') c.amount = e.target.value===''?0:Number(e.target.value);
+      recomputeAll(); scheduleSave();
     });
-    el.addEventListener('click', (e)=>{
-      const btn = e.target.closest('[data-cost-action="delete"]');
-      if(!btn) return;
-      const row = btn.closest('.list-row');
+    el.addEventListener('click',(e)=>{
+      const btn=e.target.closest('[data-cost-action="delete"]'); if(!btn) return;
+      const row=btn.closest('.list-row');
       state.settings.fixedCostItems = state.settings.fixedCostItems.filter(x=>x.id!==row.dataset.costId);
-      renderCostList();
-      recomputeAll();
-      scheduleSave();
+      renderCostList(); recomputeAll(); scheduleSave();
     });
   }
+  $('#addFeeBtn').addEventListener('click',()=>{ state.settings.extraPercentFees.push({id:'f'+(nextFeeIdCounter++),label:'新費用',percent:0}); renderFeeList(); recomputeAll(); scheduleSave(); });
+  $('#addCostBtn').addEventListener('click',()=>{ state.settings.fixedCostItems.push({id:'c'+(nextCostIdCounter++),label:'新成本項目',amount:0}); renderCostList(); recomputeAll(); scheduleSave(); });
 
-  $('#addFeeBtn').addEventListener('click', ()=>{
-    state.settings.extraPercentFees.push({ id:'f'+(nextFeeIdCounter++), label:'新費用', percent:0 });
-    renderFeeList();
-    recomputeAll();
-    scheduleSave();
-  });
-  $('#addCostBtn').addEventListener('click', ()=>{
-    state.settings.fixedCostItems.push({ id:'c'+(nextCostIdCounter++), label:'新成本項目', amount:0 });
-    renderCostList();
-    recomputeAll();
-    scheduleSave();
-  });
-
-  // ---------- settings: basic fields ----------
+  // ---------- settings basic fields ----------
   function fillSettingsInputs(){
     $('#commissionRate').value = state.settings.commissionRate;
     $('#periodDays').value = state.settings.periodDays;
     $('#guaranteedRevenue').value = state.settings.guaranteedRevenue;
     $('#targetRevenue').value = state.settings.targetRevenue;
+    $('#staffDiscount').value = state.settings.staffDiscount;
   }
   function bindSettingsEvents(){
-    ['commissionRate','periodDays','guaranteedRevenue','targetRevenue'].forEach(key=>{
-      $('#'+key).addEventListener('input', (e)=>{
-        let v = e.target.value==='' ? 0 : Number(e.target.value);
-        if(key==='commissionRate') v = Math.min(95, Math.max(0, v));
-        state.settings[key] = v;
-        recomputeAll();
-        scheduleSave();
+    ['commissionRate','periodDays','guaranteedRevenue','targetRevenue','staffDiscount'].forEach(key=>{
+      $('#'+key).addEventListener('input',(e)=>{
+        let v = e.target.value===''?0:Number(e.target.value);
+        if(key==='commissionRate') v=Math.min(95,Math.max(0,v));
+        if(key==='staffDiscount') v=Math.min(90,Math.max(0,v));
+        state.settings[key]=v; recomputeAll(); scheduleSave();
       });
     });
   }
 
+  // ---------- templates ----------
+  function renderTemplateSelect(){
+    const sel = $('#templateSelect');
+    sel.innerHTML = '<option value="">— 選擇已存範本 —</option>' + state.templates.map(t=>`<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
+  }
+  $('#saveTemplateBtn').addEventListener('click', ()=>{
+    const nameInput = $('#templateNameInput');
+    const name = nameInput.value.trim();
+    if(!name){ alert('請先輸入範本名稱'); return; }
+    state.templates.push({ id:'tpl'+(nextTemplateIdCounter++), name, settings: JSON.parse(JSON.stringify(state.settings)) });
+    nameInput.value = '';
+    renderTemplateSelect();
+    scheduleSave();
+  });
+  $('#applyTemplateBtn').addEventListener('click', ()=>{
+    const id = $('#templateSelect').value;
+    if(!id){ alert('請先選一個範本'); return; }
+    const tpl = state.templates.find(t=>t.id===id);
+    if(!tpl) return;
+    if(!confirm(`套用範本「${tpl.name}」會覆蓋目前的通路設定（不影響已輸入的商品），確定要套用嗎？`)) return;
+    state.settings = JSON.parse(JSON.stringify(tpl.settings));
+    fillSettingsInputs(); renderFeeList(); renderCostList(); recomputeAll(); scheduleSave();
+  });
+  $('#deleteTemplateBtn').addEventListener('click', ()=>{
+    const id = $('#templateSelect').value;
+    if(!id){ alert('請先選一個範本'); return; }
+    const tpl = state.templates.find(t=>t.id===id);
+    if(!tpl) return;
+    if(!confirm(`確定要刪除範本「${tpl.name}」嗎？`)) return;
+    state.templates = state.templates.filter(t=>t.id!==id);
+    renderTemplateSelect(); scheduleSave();
+  });
+
   // ---------- product cards ----------
+  function promoTypeButtons(activeType){
+    const types = [['bxgy','買X送Y'],['tiered','買X件以上折扣'],['addon','買X盒加購']];
+    return types.map(([val,label])=>`<button class="promo-type-btn${activeType===val?' active':''}" data-promo-type-btn="${val}">${label}</button>`).join('');
+  }
+  function bxgyFormHtml(p){
+    return `
+      <div class="promo-form-row">付費 <div class="num-wrap"><input type="number" min="0" step="1" data-promo-field="bxgy-payQty" value="${p.promo.bxgy.payQty}"></div> 件，送 <div class="num-wrap"><input type="number" min="0" step="1" data-promo-field="bxgy-freeQty" value="${p.promo.bxgy.freeQty}"></div> 件</div>
+      <div class="promo-result" data-out="bxgyResult"></div>`;
+  }
+  function addonFormHtml(p){
+    return `
+      <div class="promo-form-row">買滿 <div class="num-wrap"><input type="number" min="0" step="1" data-promo-field="addon-threshold" value="${p.promo.addon.threshold}"></div> 件，可加購 1 件，加購價 $<div class="num-wrap"><input type="number" min="0" step="1" data-promo-field="addon-addonPrice" value="${p.promo.addon.addonPrice}"></div></div>
+      <div class="promo-result" data-out="addonResult"></div>`;
+  }
+  function tierRowHtml(t){
+    return `<div class="tier-row" data-tier-id="${t.id}">
+      買 <div class="num-wrap"><input type="number" min="0" step="1" data-tier-field="minQty" value="${t.minQty}"></div> 件以上，打 <div class="num-wrap"><input type="number" min="0" max="100" step="1" data-tier-field="discountPercent" value="${t.discountPercent}"></div> 折
+      <span class="tier-result" data-out="tierResult"></span>
+      <button class="row-del" data-tier-action="delete">×</button></div>`;
+  }
+  function tieredFormHtml(p){
+    const rows = p.promo.tiers.length===0 ? '<div class="list-empty">尚未新增折扣門檻</div>' : p.promo.tiers.map(tierRowHtml).join('');
+    return `<div data-out="tierRows">${rows}</div><button class="mini-add-btn" data-promo-action="addTier">＋ 新增折扣門檻</button>`;
+  }
+  function advPromoBodyHtml(p){
+    let formHtml = '';
+    if(p.promo.type==='bxgy') formHtml = bxgyFormHtml(p);
+    else if(p.promo.type==='tiered') formHtml = tieredFormHtml(p);
+    else if(p.promo.type==='addon') formHtml = addonFormHtml(p);
+    else formHtml = '<div class="adv-promo-note">選一種促銷方式開始試算（不會影響上方整體總結，只看這個促銷划不划算）。</div>';
+    return `<div class="promo-type-row">${promoTypeButtons(p.promo.type)}</div><div data-out="promoForm">${formHtml}</div>`;
+  }
+
   function cardTemplate(p){
     return `
       <div class="price-tag-card" data-id="${p.id}">
@@ -490,35 +577,38 @@
           <div class="floor-line hard"><span class="label">賠錢底線（成本＋抽成手續費）</span><span class="value mono" data-out="hardFloor"></span></div>
           <div class="floor-line soft"><span class="label">打平底線（含分攤固定成本／包底）</span><span class="value mono" data-out="softFloor"></span></div>
         </div>
+        <div class="staff-block">
+          <div class="staff-block-head">員工優惠（獨立試算）</div>
+          <div class="floor-line staff"><span class="label">員工優惠售價</span><span class="value mono" data-out="staffPrice"></span></div>
+          <div class="floor-line staff"><span class="sub" data-out="staffNote"></span></div>
+          <div class="field"><label>預估員工銷量</label><div class="input-wrap"><input type="number" min="0" step="1" data-field="staffEstQty" value="${p.staffEstQty}"><span>件</span></div></div>
+        </div>
         <div class="promo-block">
-          <div class="promo-label"><span>促銷試算售價</span><span class="test-price mono" data-out="testPriceLabel"></span></div>
+          <div class="promo-label"><span>單品促銷試算售價</span><span class="test-price mono" data-out="testPriceLabel"></span></div>
           <input type="range" data-field="testPrice" min="0" max="${Math.max(p.price*1.5, 100)}" step="1" value="${p.testPrice}">
           <div class="result-badge" data-out="resultBadge"><span data-out="resultText">—</span><span class="diff-note" data-out="diffNote"></span></div>
         </div>
+        <details class="adv-promo" ${p.promo.type!=='none' ? 'open' : ''}>
+          <summary>進階促銷試算（買送／累進折扣／加購）</summary>
+          <div data-out="advPromoBody">${advPromoBodyHtml(p)}</div>
+        </details>
       </div>`;
   }
 
   function findProduct(id){ return state.products.find(p=>p.id===id); }
 
   function renderProducts(){
-    const grid = $('#productsGrid'), empty = $('#emptyState');
-    if(state.products.length===0){
-      grid.style.display='none'; empty.style.display='block'; grid.innerHTML='';
-    }else{
-      empty.style.display='none'; grid.style.display='grid';
-      grid.innerHTML = state.products.map(cardTemplate).join('');
-    }
+    const grid=$('#productsGrid'), empty=$('#emptyState');
+    if(state.products.length===0){ grid.style.display='none'; empty.style.display='block'; grid.innerHTML=''; }
+    else{ empty.style.display='none'; grid.style.display='grid'; grid.innerHTML = state.products.map(cardTemplate).join(''); }
     recomputeAll();
   }
 
   function updateCardComputed(id){
-    const card = $(`.price-tag-card[data-id="${id}"]`);
-    if(!card) return;
-    const p = findProduct(id);
-    if(!p) return;
+    const card = $(`.price-tag-card[data-id="${id}"]`); if(!card) return;
+    const p = findProduct(id); if(!p) return;
     const fcpu = getFixedCostPerUnit();
-    const hf = hardFloor(p.cost);
-    const sf = softFloor(p.cost, fcpu);
+    const hf = hardFloor(p.cost), sf = softFloor(p.cost, fcpu);
     card.querySelector('[data-out="hardFloor"]').textContent = fmt(hf);
     card.querySelector('[data-out="softFloor"]').textContent = fmt(sf);
     card.querySelector('[data-out="testPriceLabel"]').textContent = fmt(p.testPrice);
@@ -530,116 +620,216 @@
     badge.classList.remove('profit','loss');
     if(profit>=0){ badge.classList.add('profit'); text.textContent='每件賺 '+fmt(profit); }
     else{ badge.classList.add('loss'); text.textContent='每件賠 '+fmt(Math.abs(profit)); }
-    if(p.testPrice < hf) note.textContent='低於賠錢底線';
-    else if(p.testPrice < sf) note.textContent='未涵蓋分攤固定成本';
+    if(p.testPrice<hf) note.textContent='低於賠錢底線';
+    else if(p.testPrice<sf) note.textContent='未涵蓋分攤固定成本';
     else note.textContent='';
 
     const slider = card.querySelector('[data-field="testPrice"]');
-    const desiredMax = Math.max(p.price*1.5, 100);
+    const desiredMax = Math.max(p.price*1.5,100);
     if(Number(slider.max)!==desiredMax) slider.max = desiredMax;
+
+    // staff price
+    const staffDiscount = Number(state.settings.staffDiscount)||0;
+    const staffPrice = getStaffPrice(p);
+    const staffProfit = getStaffUnitProfit(p);
+    card.querySelector('[data-out="staffPrice"]').textContent = fmt(staffPrice);
+    const staffNoteEl = card.querySelector('[data-out="staffNote"]');
+    if(staffDiscount<=0){ staffNoteEl.textContent='尚未設定員工優惠折扣'; staffNoteEl.style.color='var(--ink-soft)'; }
+    else if(staffProfit>=0){ staffNoteEl.textContent='每件仍賺 '+fmt(staffProfit); staffNoteEl.style.color='var(--green)'; }
+    else{ staffNoteEl.textContent='每件賠 '+fmt(Math.abs(staffProfit))+'（廠商吸收）'; staffNoteEl.style.color='var(--red)'; }
+
+    updatePromoResults(id);
+  }
+
+  function updatePromoResults(id){
+    const card = $(`.price-tag-card[data-id="${id}"]`); if(!card) return;
+    const p = findProduct(id); if(!p) return;
+    const hf = hardFloor(p.cost);
+
+    if(p.promo.type==='bxgy'){
+      const r = calcBxgy(p);
+      const out = card.querySelector('[data-out="bxgyResult"]');
+      if(out){
+        if(!r){ out.innerHTML = '請輸入付費件數'; }
+        else{
+          const cls = r.avgPrice>=hf ? 'ok' : 'bad';
+          out.innerHTML = `整組共 <b>${r.totalUnits}</b> 件（送出後）<br>
+            平均每件實收 <b>${fmt(r.avgPrice)}</b>（賠錢底線 ${fmt(hf)}）<br>
+            這組整體 <span class="${r.profit>=0?'ok':'bad'}">${r.profit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.profit))}</b></span>，
+            平均每件 <span class="${cls}">${r.avgProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.avgProfit))}</b></span>`;
+        }
+      }
+    }else if(p.promo.type==='addon'){
+      const r = calcAddon(p);
+      const out = card.querySelector('[data-out="addonResult"]');
+      if(out){
+        const cls = r.addonUnitProfit>=0 ? 'ok' : 'bad';
+        out.innerHTML = `整組共 <b>${r.totalUnits}</b> 件（含加購）<br>
+          整組 <span class="${r.profit>=0?'ok':'bad'}">${r.profit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.profit))}</b></span>，
+          平均每件 <span class="${r.avgProfit>=0?'ok':'bad'}">${r.avgProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.avgProfit))}</b></span><br>
+          單看加購這件本身 <span class="${cls}">${r.addonUnitProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.addonUnitProfit))}</b></span>`;
+      }
+    }else if(p.promo.type==='tiered'){
+      p.promo.tiers.forEach(t=>{
+        const row = card.querySelector(`.tier-row[data-tier-id="${t.id}"]`);
+        if(!row) return;
+        const tierPrice = (Number(p.price)||0) * (1-(Number(t.discountPercent)||0)/100);
+        const tierProfit = unitProfit(tierPrice, p.cost);
+        const resEl = row.querySelector('[data-out="tierResult"]');
+        resEl.classList.remove('ok','bad');
+        resEl.classList.add(tierProfit>=0?'ok':'bad');
+        resEl.textContent = fmt(tierPrice) + ' / 每件' + (tierProfit>=0?'賺':'賠') + fmt(Math.abs(tierProfit)).replace('NT$ ','');
+      });
+    }
   }
 
   function updateAllCardComputed(){ state.products.forEach(p=>updateCardComputed(p.id)); }
 
   function updateSettingsTotals(){
-    const totalRate = getTotalPercentRate();
-    const fixedBase = getFixedCostBase();
-    const gap = getGuaranteedGap();
-    const fixedTotal = getTotalFixedCost();
-    $('#totalRateDisplay').textContent = totalRate.toFixed(1)+'%';
-    $('#fixedBaseDisplay').textContent = fmt(fixedBase);
-    $('#guaranteedGapDisplay').textContent = fmt(gap);
-    $('#fixedTotalDisplay').textContent = fmt(fixedTotal);
+    $('#totalRateDisplay').textContent = getTotalPercentRate().toFixed(1)+'%';
+    $('#fixedBaseDisplay').textContent = fmt(getFixedCostBase());
+    $('#guaranteedGapDisplay').textContent = fmt(getGuaranteedGap());
+    $('#fixedTotalDisplay').textContent = fmt(getTotalFixedCost());
   }
 
   function updateSummary(){
-    const fixedTotal = getTotalFixedCost();
-    const totalQty = getTotalQty();
-    const totalRevenue = getTotalEstimatedRevenue();
+    const fixedTotal = getTotalFixedCost(), totalQty = getTotalQty(), totalRevenue = getTotalEstimatedRevenue();
     $('#sumFixedCost').textContent = fmt(fixedTotal);
     $('#sumQty').textContent = fmtPlain(totalQty);
     $('#sumRevenue').textContent = fmt(totalRevenue);
 
     let grossProfit = 0;
-    state.products.forEach(p=>{ grossProfit += unitProfit(p.testPrice,p.cost) * (Number(p.estQty)||0); });
+    state.products.forEach(p=>{ grossProfit += unitProfit(p.testPrice,p.cost)*(Number(p.estQty)||0); });
     $('#sumGrossProfit').textContent = fmt(grossProfit);
 
-    const bar = $('#summaryBar'), status = $('#summaryStatus');
+    const bar=$('#summaryBar'), status=$('#summaryStatus');
     bar.classList.remove('profit','loss'); status.classList.remove('profit','loss');
+    const extra = $('#summaryExtra'); extra.innerHTML='';
 
-    const extra = $('#summaryExtra');
-    extra.innerHTML = '';
-
-    if(state.products.length===0){
-      status.textContent = '尚未輸入商品資料';
-      return;
-    }
+    if(state.products.length===0){ status.textContent='尚未輸入商品資料'; return; }
 
     const net = grossProfit - fixedTotal;
-    if(net>=0){ bar.classList.add('profit'); status.classList.add('profit'); status.textContent='整檔預估賺 '+fmt(net); }
-    else{ bar.classList.add('loss'); status.classList.add('loss'); status.textContent='整檔預估賠 '+fmt(Math.abs(net)); }
+    if(net>=0){ bar.classList.add('profit'); status.classList.add('profit'); status.textContent='零售整檔預估賺 '+fmt(net); }
+    else{ bar.classList.add('loss'); status.classList.add('loss'); status.textContent='零售整檔預估賠 '+fmt(Math.abs(net)); }
 
-    // break-even revenue based on current average margin
     const avgMarginRate = totalRevenue>0 ? grossProfit/totalRevenue : 0;
     let extraHtml = '';
     if(avgMarginRate>0){
       const breakEvenRevenue = fixedTotal/avgMarginRate;
       const days = Number(state.settings.periodDays)||0;
       extraHtml += `<div>打平所需總營業額<b>${fmt(breakEvenRevenue)}</b></div>`;
-      if(days>0){
-        extraHtml += `<div>平均每天需做到<b>${fmt(breakEvenRevenue/days)}</b></div>`;
-      }
+      if(days>0) extraHtml += `<div>平均每天需做到<b>${fmt(breakEvenRevenue/days)}</b></div>`;
     }else{
       extraHtml += `<div style="color:var(--red);">目前平均毛利率為 0 或負值，調整售價／成本後才能算出打平營業額</div>`;
     }
     const target = Number(state.settings.targetRevenue)||0;
-    if(target>0){
-      const pct = Math.round((totalRevenue/target)*100);
-      extraHtml += `<div>預估營收 ／ 目標營業額<b>${pct}%</b></div>`;
-    }
+    if(target>0) extraHtml += `<div>預估營收 ／ 目標營業額<b>${Math.round((totalRevenue/target)*100)}%</b></div>`;
     extra.innerHTML = extraHtml;
   }
 
-  function recomputeAll(){
-    updateSettingsTotals();
-    updateAllCardComputed();
-    updateSummary();
+  function updateStaffSummary(){
+    const qty = getTotalStaffQty();
+    const revenue = getTotalStaffRevenue();
+    const grossProfit = getTotalStaffGrossProfit();
+    $('#staffSumQty').textContent = fmtPlain(qty);
+    $('#staffSumRevenue').textContent = fmt(revenue);
+    $('#staffSumGrossProfit').textContent = fmt(grossProfit);
+
+    const bar = $('#staffSummaryBar'), status = $('#staffSummaryStatus');
+    status.classList.remove('profit','loss');
+    if(qty<=0){
+      status.textContent = '尚未輸入員工銷量';
+      return;
+    }
+    if(grossProfit>=0){
+      status.classList.add('profit');
+      status.textContent = '員工優惠預估賺 ' + fmt(grossProfit);
+    }else{
+      status.classList.add('loss');
+      status.textContent = '員工優惠預估賠 ' + fmt(Math.abs(grossProfit)) + '（廠商吸收）';
+    }
   }
+
+  function recomputeAll(){ updateSettingsTotals(); updateAllCardComputed(); updateSummary(); updateStaffSummary(); }
 
   // ---------- product grid events ----------
   function bindGridEvents(){
     const grid = $('#productsGrid');
-    grid.addEventListener('input', (e)=>{
-      const card = e.target.closest('.price-tag-card');
-      if(!card) return;
-      const id = card.dataset.id;
-      const p = findProduct(id);
-      if(!p) return;
+
+    grid.addEventListener('input',(e)=>{
+      const card = e.target.closest('.price-tag-card'); if(!card) return;
+      const id = card.dataset.id; const p = findProduct(id); if(!p) return;
+
       const field = e.target.dataset.field;
-      if(!field) return;
-      if(field==='name'){ p.name = e.target.value; scheduleSave(); return; }
-      let val = e.target.value==='' ? 0 : Number(e.target.value);
-      if(val<0) val=0;
-      p[field] = val;
-      recomputeAll();
-      scheduleSave();
+      if(field){
+        if(field==='name'){ p.name=e.target.value; scheduleSave(); return; }
+        let val = e.target.value===''?0:Number(e.target.value); if(val<0) val=0;
+        p[field]=val; recomputeAll(); scheduleSave(); return;
+      }
+
+      const promoField = e.target.dataset.promoField;
+      if(promoField){
+        let val = e.target.value===''?0:Number(e.target.value); if(val<0) val=0;
+        if(promoField==='bxgy-payQty') p.promo.bxgy.payQty=val;
+        else if(promoField==='bxgy-freeQty') p.promo.bxgy.freeQty=val;
+        else if(promoField==='addon-threshold') p.promo.addon.threshold=val;
+        else if(promoField==='addon-addonPrice') p.promo.addon.addonPrice=val;
+        updatePromoResults(id); scheduleSave(); return;
+      }
+
+      const tierField = e.target.dataset.tierField;
+      if(tierField){
+        const row = e.target.closest('.tier-row'); const tierId = row.dataset.tierId;
+        const t = p.promo.tiers.find(x=>x.id===tierId); if(!t) return;
+        let val = e.target.value===''?0:Number(e.target.value); if(val<0) val=0;
+        t[tierField]=val; updatePromoResults(id); scheduleSave(); return;
+      }
     });
-    grid.addEventListener('click', (e)=>{
-      const btn = e.target.closest('[data-action="delete"]');
-      if(!btn) return;
-      const card = btn.closest('.price-tag-card');
-      const id = card.dataset.id;
-      state.products = state.products.filter(p=>p.id!==id);
-      renderProducts();
-      scheduleSave();
+
+    grid.addEventListener('click',(e)=>{
+      const delBtn = e.target.closest('[data-action="delete"]');
+      if(delBtn){
+        const card = delBtn.closest('.price-tag-card'); const id = card.dataset.id;
+        state.products = state.products.filter(p=>p.id!==id);
+        renderProducts(); scheduleSave(); return;
+      }
+
+      const typeBtn = e.target.closest('[data-promo-type-btn]');
+      if(typeBtn){
+        const card = typeBtn.closest('.price-tag-card'); const id = card.dataset.id;
+        const p = findProduct(id); if(!p) return;
+        const newType = typeBtn.dataset.promoTypeBtn;
+        p.promo.type = (p.promo.type===newType) ? 'none' : newType;
+        const out = card.querySelector('[data-out="advPromoBody"]');
+        out.innerHTML = advPromoBodyHtml(p);
+        updatePromoResults(id); scheduleSave(); return;
+      }
+
+      const addTierBtn = e.target.closest('[data-promo-action="addTier"]');
+      if(addTierBtn){
+        const card = addTierBtn.closest('.price-tag-card'); const id = card.dataset.id;
+        const p = findProduct(id); if(!p) return;
+        p.promo.tiers.push({ id:'t'+(nextTierIdCounter++), minQty:2, discountPercent:10 });
+        const out = card.querySelector('[data-out="advPromoBody"]');
+        out.innerHTML = advPromoBodyHtml(p);
+        updatePromoResults(id); scheduleSave(); return;
+      }
+
+      const tierDelBtn = e.target.closest('[data-tier-action="delete"]');
+      if(tierDelBtn){
+        const card = tierDelBtn.closest('.price-tag-card'); const id = card.dataset.id;
+        const p = findProduct(id); if(!p) return;
+        const row = tierDelBtn.closest('.tier-row');
+        p.promo.tiers = p.promo.tiers.filter(t=>t.id!==row.dataset.tierId);
+        const out = card.querySelector('[data-out="advPromoBody"]');
+        out.innerHTML = advPromoBodyHtml(p);
+        updatePromoResults(id); scheduleSave(); return;
+      }
     });
   }
 
   $('#addProductBtn').addEventListener('click', ()=>{
-    const p = newProduct();
-    state.products.push(p);
-    renderProducts();
-    scheduleSave();
+    const p = newProduct(); state.products.push(p); renderProducts(); scheduleSave();
     requestAnimationFrame(()=>{
       const card = $(`.price-tag-card[data-id="${p.id}"]`);
       if(card){ const input=card.querySelector('.product-name'); if(input){input.focus();input.select();} }
@@ -647,31 +837,12 @@
   });
 
   $('#resetBtn').addEventListener('click', async ()=>{
-    if(!confirm('確定要清除全部設定與商品資料嗎？此動作無法復原。')) return;
-    state = {
-      settings: {
-        commissionRate:19, periodDays:14, guaranteedRevenue:100000, targetRevenue:400000,
-        extraPercentFees: [
-          { id:'f1', label:'信用卡／行動支付手續費', percent:2.5 },
-          { id:'f2', label:'公區管理費', percent:1 },
-          { id:'f3', label:'會員集點贊助費', percent:1.5 },
-          { id:'f4', label:'禮券手續費', percent:2.5 }
-        ],
-        fixedCostItems: [
-          { id:'c1', label:'人力薪水（櫃姐）', amount:0 },
-          { id:'c2', label:'POS 租金', amount:2500 },
-          { id:'c3', label:'公區清潔費', amount:1000 },
-          { id:'c4', label:'倉庫租金費', amount:2000 }
-        ]
-      },
-      products: []
-    };
-    nextFeeIdCounter = 5; nextCostIdCounter = 5; nextProductIdCounter = 1;
-    fillSettingsInputs();
-    renderFeeList();
-    renderCostList();
-    renderProducts();
-    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    if(!confirm('確定要清除全部設定與商品資料嗎？此動作無法復原（已存的範本不會被刪除）。')) return;
+    state.settings = defaultSettings();
+    state.products = [];
+    nextProductIdCounter=1; nextFeeIdCounter=5; nextCostIdCounter=5; nextTierIdCounter=1;
+    fillSettingsInputs(); renderFeeList(); renderCostList(); renderProducts();
+    scheduleSave();
   });
 
   // ---------- init ----------
@@ -680,11 +851,12 @@
     fillSettingsInputs();
     renderFeeList();
     renderCostList();
+    renderTemplateSelect();
     bindSettingsEvents();
     bindFeeListEvents();
     bindCostListEvents();
     bindGridEvents();
-    $('#loadingRow').style.display = 'none';
+    $('#loadingRow').style.display='none';
     renderProducts();
   }
 
