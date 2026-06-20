@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快閃檔期 損益計算機</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDE6D6;
+    --paper-soft:#F4EFE3;
+    --card:#FBF8F1;
+    --ink:#232323;
+    --ink-soft:#6b6356;
+    --navy:#2B3A4A;
+    --green:#3F6B4F;
+    --green-bg:#E1EAE3;
+    --red:#B5402C;
+    --red-bg:#F6E2DC;
+    --gold:#A9711F;
+    --gold-bg:#F1E3C5;
+    --line:#cabd9c;
+    --line-soft:#e0d6ba;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(35,35,35,0.05) 1px, transparent 0);
+    background-size:18px 18px;
+    color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'Roboto Mono', monospace;}
+  .app{max-width:920px;margin:0 auto;padding:20px 16px 80px;}
+
+  /* ---------- Header ---------- */
+  .hero{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:18px 0 14px;
+    border-bottom:2px dashed var(--line);
+    margin-bottom:18px;
+  }
+  .tag-mark{
+    flex:0 0 auto;
+    width:40px;height:40px;
+    border-radius:6px 16px 6px 6px;
+    background:var(--navy);
+    position:relative;
+    transform:rotate(-8deg);
+  }
+  .tag-mark::after{
+    content:'';
+    position:absolute;
+    top:8px;right:8px;
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--paper-soft);
+  }
+  .hero h1{
+    margin:0;
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:0.5px;
+    color:var(--navy);
+  }
+  .hero p{
+    margin:3px 0 0;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- Generic panel ---------- */
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:0 1px 0 var(--line-soft);
+  }
+  .panel-title{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:12px;
+  }
+  .panel-title h2{
+    font-size:14px;
+    margin:0;
+    font-weight:700;
+    color:var(--navy);
+    letter-spacing:1px;
+  }
+  .panel-title .eyebrow{
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:1px;
+  }
+
+  /* ---------- Settings form ---------- */
+  .settings-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px 14px;
+  }
+  @media(max-width:520px){ .settings-grid{grid-template-columns:1fr;} }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .field label{
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .field .input-wrap{
+    display:flex;
+    align-items:center;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    overflow:hidden;
+  }
+  .field .input-wrap span{
+    padding:0 8px;
+    font-size:12px;
+    color:var(--ink-soft);
+    background:var(--paper-soft);
+    align-self:stretch;
+    display:flex;
+    align-items:center;
+    border-right:1px solid var(--line);
+  }
+  .field input{
+    border:none;
+    outline:none;
+    padding:9px 10px;
+    font-size:14px;
+    width:100%;
+    font-family:'Roboto Mono',monospace;
+    background:transparent;
+  }
+  .fixed-cost-total{
+    margin-top:14px;
+    padding:10px 12px;
+    border-radius:8px;
+    background:var(--gold-bg);
+    color:var(--gold);
+    font-size:13px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .fixed-cost-total b{font-size:16px;}
+
+  /* ---------- Summary bar ---------- */
+  .summary-bar{
+    position:sticky;
+    top:10px;
+    z-index:5;
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-bottom:18px;
+    border:1px solid var(--line-soft);
+    background:var(--card);
+    transition:background 0.25s, border-color 0.25s;
+  }
+  .summary-bar.profit{background:var(--green-bg);border-color:var(--green);}
+  .summary-bar.loss{background:var(--red-bg);border-color:var(--red);}
+  .summary-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .summary-status{
+    font-size:15px;
+    font-weight:700;
+  }
+  .summary-status.profit{color:var(--green);}
+  .summary-status.loss{color:var(--red);}
+  .summary-numbers{
+    display:flex;
+    gap:18px;
+    margin-top:8px;
+    flex-wrap:wrap;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .summary-numbers b{
+    display:block;
+    font-size:15px;
+    color:var(--ink);
+    font-family:'Roboto Mono',monospace;
+  }
+
+  /* ---------- Products ---------- */
+  .section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+  }
+  .section-header h2{
+    font-size:14px;
+    margin:0;
+    font-weight:700;
+    color:var(--navy);
+    letter-spacing:1px;
+  }
+  button{
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .add-btn{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:13px;
+    font-weight:700;
+  }
+  .add-btn:hover{opacity:0.9;}
+  .products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:14px;
+  }
+  .price-tag-card{
+    position:relative;
+    background:var(--card);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:16px 14px 14px;
+  }
+  .tag-hole{
+    position:absolute;
+    top:-7px;left:18px;
+    width:14px;height:14px;
+    background:var(--paper);
+    border:1px dashed var(--line);
+    border-radius:50%;
+  }
+  .card-top{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .product-name{
+    flex:1;
+    border:none;
+    border-bottom:1px solid var(--line-soft);
+    background:transparent;
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    padding:4px 2px;
+    font-family:'Noto Sans TC',sans-serif;
+  }
+  .product-name:focus{outline:none;border-color:var(--navy);}
+  .delete-btn{
+    border:none;
+    background:transparent;
+    color:var(--ink-soft);
+    font-size:16px;
+    line-height:1;
+    padding:4px 6px;
+  }
+  .delete-btn:hover{color:var(--red);}
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .field-row .field label{font-size:11px;}
+  .field-row .input-wrap input{padding:7px 8px;font-size:13px;}
+  .field-row .input-wrap span{padding:0 6px;font-size:11px;}
+
+  .floor-block{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-bottom:12px;
+    padding:10px;
+    border-radius:8px;
+    background:var(--paper-soft);
+  }
+  .floor-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+  }
+  .floor-line .label{color:var(--ink-soft);}
+  .floor-line .value{font-size:14px;font-weight:700;}
+  .floor-line.hard .value{color:var(--red);}
+  .floor-line.soft .value{color:var(--gold);}
+
+  .promo-block{border-top:1px dashed var(--line-soft);padding-top:12px;}
+  .promo-label{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .promo-label .test-price{font-weight:700;color:var(--ink);font-size:13px;}
+  input[type=range]{
+    width:100%;
+    accent-color:var(--navy);
+    margin:4px 0 8px;
+  }
+  .result-badge{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:700;
+  }
+  .result-badge.profit{background:var(--green-bg);color:var(--green);}
+  .result-badge.loss{background:var(--red-bg);color:var(--red);}
+  .result-badge .diff-note{font-size:11px;font-weight:500;color:var(--ink-soft);}
+
+  .empty-state{
+    text-align:center;
+    padding:40px 20px;
+    color:var(--ink-soft);
+    font-size:13px;
+    border:1px dashed var(--line);
+    border-radius:var(--radius);
+  }
+
+  footer{
+    margin-top:30px;
+    text-align:center;
+  }
+  .reset-btn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    border-radius:8px;
+    padding:7px 14px;
+    font-size:12px;
+  }
+  .reset-btn:hover{color:var(--red);border-color:var(--red);}
+  .save-note{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  .loading-row{
+    text-align:center;
+    padding:30px;
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hero">
+    <div class="tag-mark"></div>
+    <div>
+      <h1>快閃檔期 損益計算機</h1>
+      <p>抓出每件商品賠錢底線，套入抽成與薪水後試算這檔活動賺不賺</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <h2>檔期設定</h2>
+      <span class="eyebrow">SETTINGS</span>
+    </div>
+    <div class="settings-grid">
+      <div class="field">
+        <label>百貨／通路抽成</label>
+        <div class="input-wrap">
+          <input type="number" id="commissionRate" min="0" max="95" step="1">
+          <span>%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>檔期天數</label>
+        <div class="input-wrap">
+          <input type="number" id="periodDays" min="0" step="1">
+          <span>天</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>櫃姐／人力薪水（整檔）</label>
+        <div class="input-wrap">
+          <span>NT$</span>
+          <input type="number" id="staffSalary" min="0" step="100">
+        </div>
+      </div>
+      <div class="field">
+        <label>其他固定成本（場地費／運費等）</label>
+        <div class="input-wrap">
+          <span>NT$</span>
+          <input type="number" id="otherFixedCost" min="0" step="100">
+        </div>
+      </div>
+    </div>
+    <div class="fixed-cost-total">
+      <span>本檔期固定成本合計</span>
+      <b class="mono" id="fixedCostTotalDisplay">NT$ 0</b>
+    </div>
+  </div>
+
+  <div class="summary-bar" id="summaryBar">
+    <div class="summary-top">
+      <span class="summary-status" id="summaryStatus">尚未輸入商品資料</span>
+    </div>
+    <div class="summary-numbers">
+      <div>預估總毛利<b class="mono" id="sumGrossProfit">NT$ 0</b></div>
+      <div>固定成本<b class="mono" id="sumFixedCost">NT$ 0</b></div>
+      <div>預估件數<b class="mono" id="sumQty">0</b></div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>商品損平表</h2>
+    <button class="add-btn" id="addProductBtn">＋ 新增商品</button>
+  </div>
+
+  <div id="loadingRow" class="loading-row">載入資料中…</div>
+  <div class="products-grid" id="productsGrid" style="display:none;"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    還沒有商品，按上方「新增商品」開始建立你的損平表
+  </div>
+
+  <footer>
+    <button class="reset-btn" id="resetBtn">清除全部資料</button>
+    <div class="save-note">資料會存在這台裝置的瀏覽器裡，換電腦或清除瀏覽器資料會不見</div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'popup-pricing-data';
+  let state = {
+    settings: { commissionRate: 25, periodDays: 7, staffSalary: 0, otherFixedCost: 0 },
+    products: []
+  };
+  let saveTimer = null;
+  let nextIdCounter = 1;
+
+  const $ = (sel, root) => (root||document).querySelector(sel);
+  const $$ = (sel, root) => Array.from((root||document).querySelectorAll(sel));
+
+  function fmt(n){
+    n = Math.round(n || 0);
+    return 'NT$ ' + n.toLocaleString('en-US');
+  }
+  function fmtPlain(n){
+    n = Math.round(n || 0);
+    return n.toLocaleString('en-US');
+  }
+
+  function clampCommission(rate){
+    rate = Number(rate);
+    if(isNaN(rate)) return 0;
+    return Math.min(95, Math.max(0, rate));
+  }
+
+  function newProduct(){
+    return {
+      id: 'p' + (nextIdCounter++),
+      name: '新商品',
+      cost: 0,
+      price: 0,
+      testPrice: 0,
+      estQty: 1
+    };
+  }
+
+  // ---------- persistence (browser localStorage, for self-hosted use) ----------
+  async function loadData(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed.settings) state.settings = Object.assign(state.settings, parsed.settings);
+        if(Array.isArray(parsed.products)) state.products = parsed.products;
+        let maxId = 0;
+        state.products.forEach(p=>{
+          const num = parseInt(String(p.id).replace('p',''),10);
+          if(!isNaN(num) && num > maxId) maxId = num;
+        });
+        nextIdCounter = maxId + 1;
+      }
+    }catch(e){
+      // no existing data yet, start fresh
+    }
+  }
+
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveData, 500);
+  }
+
+  async function saveData(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }catch(e){
+      console.error('儲存失敗', e);
+    }
+  }
+
+  // ---------- calculations ----------
+  function getFixedCostTotal(){
+    return (Number(state.settings.staffSalary)||0) + (Number(state.settings.otherFixedCost)||0);
+  }
+
+  function getTotalQty(){
+    return state.products.reduce((sum,p)=> sum + (Number(p.estQty)||0), 0);
+  }
+
+  function getFixedCostPerUnit(){
+    const totalQty = getTotalQty();
+    if(totalQty <= 0) return 0;
+    return getFixedCostTotal() / totalQty;
+  }
+
+  function hardFloor(cost, commissionRate){
+    const rate = clampCommission(commissionRate);
+    return cost / (1 - rate/100);
+  }
+
+  function softFloor(cost, commissionRate, fixedCostPerUnit){
+    const rate = clampCommission(commissionRate);
+    return (cost + fixedCostPerUnit) / (1 - rate/100);
+  }
+
+  function unitProfit(testPrice, cost, commissionRate){
+    const rate = clampCommission(commissionRate);
+    return testPrice * (1 - rate/100) - cost;
+  }
+
+  // ---------- rendering: settings ----------
+  function fillSettingsInputs(){
+    $('#commissionRate').value = state.settings.commissionRate;
+    $('#periodDays').value = state.settings.periodDays;
+    $('#staffSalary').value = state.settings.staffSalary;
+    $('#otherFixedCost').value = state.settings.otherFixedCost;
+  }
+
+  function bindSettingsEvents(){
+    ['commissionRate','periodDays','staffSalary','otherFixedCost'].forEach(key=>{
+      $('#'+key).addEventListener('input', (e)=>{
+        let v = e.target.value === '' ? 0 : Number(e.target.value);
+        if(key === 'commissionRate') v = clampCommission(v);
+        state.settings[key] = v;
+        recomputeAll();
+        scheduleSave();
+      });
+    });
+  }
+
+  // ---------- rendering: products ----------
+  function cardTemplate(p){
+    return `
+      <div class="price-tag-card" data-id="${p.id}">
+        <div class="tag-hole"></div>
+        <div class="card-top">
+          <input class="product-name" data-field="name" value="${escapeHtml(p.name)}">
+          <button class="delete-btn" data-action="delete" title="刪除商品">×</button>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>成本價</label>
+            <div class="input-wrap"><span>$</span><input type="number" min="0" step="1" data-field="cost" value="${p.cost}"></div>
+          </div>
+          <div class="field">
+            <label>原售價</label>
+            <div class="input-wrap"><span>$</span><input type="number" min="0" step="1" data-field="price" value="${p.price}"></div>
+          </div>
+          <div class="field">
+            <label>預估銷量</label>
+            <div class="input-wrap"><input type="number" min="0" step="1" data-field="estQty" value="${p.estQty}"><span>件</span></div>
+          </div>
+        </div>
+        <div class="floor-block">
+          <div class="floor-line hard">
+            <span class="label">賠錢底線（成本＋抽成）</span>
+            <span class="value mono" data-out="hardFloor">${fmt(hardFloor(p.cost, state.settings.commissionRate))}</span>
+          </div>
+          <div class="floor-line soft">
+            <span class="label">打平底線（含分攤薪水／場地）</span>
+            <span class="value mono" data-out="softFloor">${fmt(softFloor(p.cost, state.settings.commissionRate, getFixedCostPerUnit()))}</span>
+          </div>
+        </div>
+        <div class="promo-block">
+          <div class="promo-label">
+            <span>促銷試算售價</span>
+            <span class="test-price mono" data-out="testPriceLabel">${fmt(p.testPrice)}</span>
+          </div>
+          <input type="range" data-field="testPrice" min="0" max="${Math.max(p.price*1.5, 100)}" step="1" value="${p.testPrice}">
+          <div class="result-badge" data-out="resultBadge">
+            <span data-out="resultText">—</span>
+            <span class="diff-note" data-out="diffNote"></span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  function renderProducts(){
+    const grid = $('#productsGrid');
+    const empty = $('#emptyState');
+    if(state.products.length === 0){
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      grid.innerHTML = '';
+    }else{
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+      grid.innerHTML = state.products.map(cardTemplate).join('');
+    }
+    updateAllCardComputed();
+    updateSummary();
+  }
+
+  function findProduct(id){
+    return state.products.find(p => p.id === id);
+  }
+
+  function updateCardComputed(id){
+    const card = $(`.price-tag-card[data-id="${id}"]`);
+    if(!card) return;
+    const p = findProduct(id);
+    if(!p) return;
+    const fcpu = getFixedCostPerUnit();
+    const hf = hardFloor(p.cost, state.settings.commissionRate);
+    const sf = softFloor(p.cost, state.settings.commissionRate, fcpu);
+    card.querySelector('[data-out="hardFloor"]').textContent = fmt(hf);
+    card.querySelector('[data-out="softFloor"]').textContent = fmt(sf);
+    card.querySelector('[data-out="testPriceLabel"]').textContent = fmt(p.testPrice);
+
+    const profit = unitProfit(p.testPrice, p.cost, state.settings.commissionRate);
+    const badge = card.querySelector('[data-out="resultBadge"]');
+    const text = card.querySelector('[data-out="resultText"]');
+    const note = card.querySelector('[data-out="diffNote"]');
+    badge.classList.remove('profit','loss');
+    if(profit >= 0){
+      badge.classList.add('profit');
+      text.textContent = '每件賺 ' + fmt(profit);
+    }else{
+      badge.classList.add('loss');
+      text.textContent = '每件賠 ' + fmt(Math.abs(profit));
+    }
+    if(p.testPrice < hf){
+      note.textContent = '低於賠錢底線';
+    }else if(p.testPrice < sf){
+      note.textContent = '未涵蓋分攤固定成本';
+    }else{
+      note.textContent = '';
+    }
+
+    // keep slider range sensible if price changed
+    const slider = card.querySelector('[data-field="testPrice"]');
+    const desiredMax = Math.max(p.price * 1.5, 100);
+    if(Number(slider.max) !== desiredMax){
+      slider.max = desiredMax;
+    }
+  }
+
+  function updateAllCardComputed(){
+    state.products.forEach(p => updateCardComputed(p.id));
+  }
+
+  function updateSummary(){
+    const fixedTotal = getFixedCostTotal();
+    $('#fixedCostTotalDisplay').textContent = fmt(fixedTotal);
+    $('#sumFixedCost').textContent = fmt(fixedTotal);
+
+    const totalQty = getTotalQty();
+    $('#sumQty').textContent = fmtPlain(totalQty);
+
+    let grossProfit = 0;
+    state.products.forEach(p=>{
+      const profit = unitProfit(p.testPrice, p.cost, state.settings.commissionRate);
+      grossProfit += profit * (Number(p.estQty)||0);
+    });
+    $('#sumGrossProfit').textContent = fmt(grossProfit);
+
+    const bar = $('#summaryBar');
+    const status = $('#summaryStatus');
+    bar.classList.remove('profit','loss');
+    status.classList.remove('profit','loss');
+
+    if(state.products.length === 0){
+      status.textContent = '尚未輸入商品資料';
+      return;
+    }
+
+    const net = grossProfit - fixedTotal;
+    if(net >= 0){
+      bar.classList.add('profit');
+      status.classList.add('profit');
+      status.textContent = '整檔預估賺 ' + fmt(net);
+    }else{
+      bar.classList.add('loss');
+      status.classList.add('loss');
+      status.textContent = '整檔預估賠 ' + fmt(Math.abs(net));
+    }
+  }
+
+  function recomputeAll(){
+    updateAllCardComputed();
+    updateSummary();
+  }
+
+  // ---------- events on product grid (delegation) ----------
+  function bindGridEvents(){
+    const grid = $('#productsGrid');
+    grid.addEventListener('input', (e)=>{
+      const card = e.target.closest('.price-tag-card');
+      if(!card) return;
+      const id = card.dataset.id;
+      const p = findProduct(id);
+      if(!p) return;
+      const field = e.target.dataset.field;
+      if(!field) return;
+
+      if(field === 'name'){
+        p.name = e.target.value;
+        scheduleSave();
+        return;
+      }
+
+      let val = e.target.value === '' ? 0 : Number(e.target.value);
+      if(val < 0) val = 0;
+
+      const qtyChanged = (field === 'estQty');
+      p[field] = val;
+
+      // keep testPrice defaulting near price only on first set; otherwise leave user's test value alone
+      if(qtyChanged){
+        recomputeAll(); // fixed cost per unit depends on total qty
+      }else{
+        updateCardComputed(id);
+        updateSummary();
+      }
+      scheduleSave();
+    });
+
+    grid.addEventListener('click', (e)=>{
+      const btn = e.target.closest('[data-action="delete"]');
+      if(!btn) return;
+      const card = btn.closest('.price-tag-card');
+      const id = card.dataset.id;
+      state.products = state.products.filter(p => p.id !== id);
+      renderProducts();
+      scheduleSave();
+    });
+  }
+
+  // ---------- add / reset ----------
+  $('#addProductBtn').addEventListener('click', ()=>{
+    const p = newProduct();
+    state.products.push(p);
+    renderProducts();
+    scheduleSave();
+    // focus the new product's name field
+    requestAnimationFrame(()=>{
+      const card = $(`.price-tag-card[data-id="${p.id}"]`);
+      if(card){
+        const input = card.querySelector('.product-name');
+        if(input){ input.focus(); input.select(); }
+      }
+    });
+  });
+
+  $('#resetBtn').addEventListener('click', async ()=>{
+    if(!confirm('確定要清除全部設定與商品資料嗎？此動作無法復原。')) return;
+    state = {
+      settings: { commissionRate: 25, periodDays: 7, staffSalary: 0, otherFixedCost: 0 },
+      products: []
+    };
+    fillSettingsInputs();
+    renderProducts();
+    try{
+      localStorage.removeItem(STORAGE_KEY);
+    }catch(e){ /* nothing to delete */ }
+  });
+
+  // ---------- init ----------
+  async function init(){
+    await loadData();
+    fillSettingsInputs();
+    bindSettingsEvents();
+    bindGridEvents();
+    $('#loadingRow').style.display = 'none';
+    renderProducts();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
