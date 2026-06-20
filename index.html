@@ -11,7 +11,7 @@
     --paper:#EDE6D6; --paper-soft:#F4EFE3; --card:#FBF8F1;
     --ink:#232323; --ink-soft:#6b6356; --navy:#2B3A4A;
     --green:#3F6B4F; --green-bg:#E1EAE3; --red:#B5402C; --red-bg:#F6E2DC;
-    --gold:#A9711F; --gold-bg:#F1E3C5; --plum:#6C4F6B; --plum-bg:#EAE1E8;
+    --gold:#A9711F; --gold-bg:#F1E3C5; --plum:#6C4F6B; --plum-bg:#EAE1E8; --teal:#2E6B6E; --teal-bg:#DCEAEA;
     --line:#cabd9c; --line-soft:#e0d6ba; --radius:14px;
   }
   *{box-sizing:border-box;}
@@ -100,19 +100,14 @@
   .floor-line .value{font-size:14px;font-weight:700;}
   .floor-line.hard .value{color:var(--red);}
   .floor-line.soft .value{color:var(--gold);}
-  .floor-line.staff .value{color:var(--plum);}
-  .floor-line.staff .sub{font-size:11px;font-weight:500;color:var(--ink-soft);}
-  .staff-block{margin-bottom:12px;padding:10px;border-radius:8px;background:var(--plum-bg);}
-  .staff-block-head{font-size:11px;font-weight:700;color:var(--plum);letter-spacing:0.5px;margin-bottom:6px;}
-  .staff-block .field{margin-top:8px;}
-  .staff-block .field label{font-size:11px;color:var(--plum);}
-  .staff-block .input-wrap{background:#fff;}
 
-  .summary-bar.staff-summary{border-color:var(--plum);background:var(--plum-bg);margin-bottom:18px;}
-  .summary-bar.staff-summary .summary-status{color:var(--plum);}
-  .summary-bar.staff-summary .summary-status.profit{color:var(--green);}
-  .summary-bar.staff-summary .summary-status.loss{color:var(--red);}
   .summary-block-label{font-size:11px;font-weight:700;color:var(--ink-soft);letter-spacing:1px;margin:0 2px 6px;}
+  .sample-block{margin-bottom:12px;padding:10px;border-radius:8px;background:var(--teal-bg);}
+  .sample-block-head{font-size:11px;font-weight:700;color:var(--teal);letter-spacing:0.5px;margin-bottom:6px;}
+  .sample-block .field{margin-bottom:8px;}
+  .sample-block .field label{font-size:11px;color:var(--teal);}
+  .sample-block .input-wrap{background:#fff;}
+  .floor-line.sample .value{color:var(--teal);}
 
   .promo-block{border-top:1px dashed var(--line-soft);padding-top:12px;}
   .promo-label{font-size:11px;color:var(--ink-soft);margin-bottom:6px;display:flex;justify-content:space-between;}
@@ -138,12 +133,12 @@
   .promo-form-row .num-wrap span{padding:0 6px;font-size:11px;color:var(--ink-soft);background:var(--paper-soft);align-self:stretch;display:flex;align-items:center;}
   .promo-result{background:var(--paper-soft);border-radius:8px;padding:9px 10px;font-size:12px;line-height:1.7;margin-top:6px;}
   .promo-result b{font-family:'Roboto Mono',monospace;}
-  .promo-result .ok{color:var(--green);} .promo-result .bad{color:var(--red);}
+  .promo-result .ok{color:var(--green);} .promo-result .bad{color:var(--red);} .promo-result .warn{color:var(--gold);}
   .tier-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;margin-bottom:6px;padding:7px 8px;background:var(--paper-soft);border-radius:7px;}
   .tier-row .num-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden;width:64px;}
   .tier-row .num-wrap input{border:none;outline:none;padding:5px 6px;font-size:12px;width:100%;font-family:'Roboto Mono',monospace;}
   .tier-row .tier-result{margin-left:auto;font-family:'Roboto Mono',monospace;font-weight:700;}
-  .tier-row .tier-result.ok{color:var(--green);} .tier-row .tier-result.bad{color:var(--red);}
+  .tier-row .tier-result.ok{color:var(--green);} .tier-row .tier-result.bad{color:var(--red);} .tier-row .tier-result.warn{color:var(--gold);}
   .tier-row .row-del{border:none;background:transparent;color:var(--ink-soft);font-size:14px;}
 
   .empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px;border:1px dashed var(--line);border-radius:var(--radius);}
@@ -199,11 +194,6 @@
         <label>目標營業額（參考用，不影響試算）</label>
         <div class="input-wrap"><span>NT$</span><input type="number" id="targetRevenue" min="0" step="1000"></div>
       </div>
-      <div class="field full">
-        <label>百貨員工優惠折扣（廠商全額吸收，套用在下方每張商品卡）</label>
-        <div class="input-wrap" style="max-width:220px;"><input type="number" id="staffDiscount" min="0" max="90" step="1"><span>%</span></div>
-        <span class="hint">例如填 20，代表員工用 8 折購買，折扣全部由你吸收，百貨仍照抽成率收費。</span>
-      </div>
     </div>
 
     <div class="list-block">
@@ -227,11 +217,11 @@
       <div class="t-item"><span>抽成＋手續費 合計比例</span><b class="mono" id="totalRateDisplay">0%</b></div>
       <div class="t-item"><span>固定成本合計</span><b class="mono" id="fixedBaseDisplay">NT$ 0</b></div>
       <div class="t-item warn"><span>包底差額（依目前預估營業額）</span><b class="mono" id="guaranteedGapDisplay">NT$ 0</b></div>
-      <div class="t-item"><span>固定成本總計（含包底差額）</span><b class="mono" id="fixedTotalDisplay">NT$ 0</b></div>
+      <div class="t-item warn"><span>試吃品總成本（依各商品預估數量加總）</span><b class="mono" id="sampleCostDisplay">NT$ 0</b></div>
+      <div class="t-item"><span>固定成本總計（含包底差額與試吃成本）</span><b class="mono" id="fixedTotalDisplay">NT$ 0</b></div>
     </div>
   </div>
 
-  <div class="summary-block-label">零售總結</div>
   <div class="summary-bar" id="summaryBar">
     <div class="summary-top"><span class="summary-status" id="summaryStatus">尚未輸入商品資料</span></div>
     <div class="summary-numbers">
@@ -241,16 +231,6 @@
       <div>預估件數<b class="mono" id="sumQty">0</b></div>
     </div>
     <div class="summary-extra" id="summaryExtra"></div>
-  </div>
-
-  <div class="summary-block-label">員工優惠總結（廠商全額吸收，獨立計算，不影響上方零售打平）</div>
-  <div class="summary-bar staff-summary" id="staffSummaryBar">
-    <div class="summary-top"><span class="summary-status" id="staffSummaryStatus">尚未輸入員工銷量</span></div>
-    <div class="summary-numbers">
-      <div>員工優惠預估營業額<b class="mono" id="staffSumRevenue">NT$ 0</b></div>
-      <div>員工優惠預估毛利<b class="mono" id="staffSumGrossProfit">NT$ 0</b></div>
-      <div>員工預估件數<b class="mono" id="staffSumQty">0</b></div>
-    </div>
   </div>
 
   <div class="section-header">
@@ -276,7 +256,6 @@
   function defaultSettings(){
     return {
       commissionRate: 19, periodDays: 14, guaranteedRevenue: 100000, targetRevenue: 400000,
-      staffDiscount: 0,
       extraPercentFees: [
         { id:'f1', label:'信用卡／行動支付手續費', percent: 2.5 },
         { id:'f2', label:'公區管理費', percent: 1 },
@@ -304,7 +283,7 @@
 
   function newProduct(){
     return {
-      id:'p'+(nextProductIdCounter++), name:'新商品', cost:0, price:0, testPrice:0, estQty:1, staffEstQty:0,
+      id:'p'+(nextProductIdCounter++), name:'新商品', cost:0, price:0, testPrice:0, estQty:1, sampleQty:0,
       promo:{ type:'none', bxgy:{payQty:2,freeQty:1}, tiers:[], addon:{threshold:3, addonPrice:0} }
     };
   }
@@ -328,7 +307,6 @@
           state.settings = Object.assign(defaultSettings(), s);
           if(!Array.isArray(state.settings.extraPercentFees)) state.settings.extraPercentFees = [];
           if(!Array.isArray(state.settings.fixedCostItems)) state.settings.fixedCostItems = [];
-          if(state.settings.staffDiscount === undefined) state.settings.staffDiscount = 0;
         }
         if(Array.isArray(parsed.products)){
           state.products = parsed.products.map(p=>{
@@ -336,7 +314,7 @@
             if(!Array.isArray(p.promo.tiers)) p.promo.tiers = [];
             if(!p.promo.bxgy) p.promo.bxgy = {payQty:2,freeQty:1};
             if(!p.promo.addon) p.promo.addon = {threshold:3, addonPrice:0};
-            if(p.staffEstQty === undefined) p.staffEstQty = 0;
+            if(p.sampleQty === undefined) p.sampleQty = 0;
             return p;
           });
         }
@@ -378,19 +356,14 @@
     const commissionRate = Number(state.settings.commissionRate)||0;
     return Math.max(0, guaranteed - rev) * (commissionRate/100);
   }
-  function getTotalFixedCost(){ return getFixedCostBase() + getGuaranteedGap(); }
+  function getSampleCostTotal(){
+    return state.products.reduce((s,p)=> s + (Number(p.cost)||0)*(Number(p.sampleQty)||0), 0);
+  }
+  function getTotalFixedCost(){ return getFixedCostBase() + getGuaranteedGap() + getSampleCostTotal(); }
   function getFixedCostPerUnit(){ const qty=getTotalQty(); return qty<=0 ? 0 : getTotalFixedCost()/qty; }
   function hardFloor(cost){ return cost / (1 - getTotalPercentRate()/100); }
   function softFloor(cost, fixedCostPerUnit){ return (cost + fixedCostPerUnit) / (1 - getTotalPercentRate()/100); }
   function unitProfit(testPrice, cost){ return testPrice * (1 - getTotalPercentRate()/100) - cost; }
-  function getStaffPrice(p){
-    const staffDiscount = Number(state.settings.staffDiscount)||0;
-    return (Number(p.price)||0) * (1-staffDiscount/100);
-  }
-  function getStaffUnitProfit(p){ return unitProfit(getStaffPrice(p), p.cost); }
-  function getTotalStaffQty(){ return state.products.reduce((s,p)=> s + (Number(p.staffEstQty)||0), 0); }
-  function getTotalStaffRevenue(){ return state.products.reduce((s,p)=> s + getStaffPrice(p)*(Number(p.staffEstQty)||0), 0); }
-  function getTotalStaffGrossProfit(){ return state.products.reduce((s,p)=> s + getStaffUnitProfit(p)*(Number(p.staffEstQty)||0), 0); }
 
   // ---------- bundle calculations ----------
   function calcBxgy(product){
@@ -480,14 +453,12 @@
     $('#periodDays').value = state.settings.periodDays;
     $('#guaranteedRevenue').value = state.settings.guaranteedRevenue;
     $('#targetRevenue').value = state.settings.targetRevenue;
-    $('#staffDiscount').value = state.settings.staffDiscount;
   }
   function bindSettingsEvents(){
-    ['commissionRate','periodDays','guaranteedRevenue','targetRevenue','staffDiscount'].forEach(key=>{
+    ['commissionRate','periodDays','guaranteedRevenue','targetRevenue'].forEach(key=>{
       $('#'+key).addEventListener('input',(e)=>{
         let v = e.target.value===''?0:Number(e.target.value);
         if(key==='commissionRate') v=Math.min(95,Math.max(0,v));
-        if(key==='staffDiscount') v=Math.min(90,Math.max(0,v));
         state.settings[key]=v; recomputeAll(); scheduleSave();
       });
     });
@@ -543,13 +514,13 @@
   }
   function tierRowHtml(t){
     return `<div class="tier-row" data-tier-id="${t.id}">
-      買 <div class="num-wrap"><input type="number" min="0" step="1" data-tier-field="minQty" value="${t.minQty}"></div> 件以上，打 <div class="num-wrap"><input type="number" min="0" max="100" step="1" data-tier-field="discountPercent" value="${t.discountPercent}"></div> 折
+      買 <div class="num-wrap"><input type="number" min="0" step="1" data-tier-field="minQty" value="${t.minQty}"></div> 件以上，打 <div class="num-wrap"><input type="number" min="0" max="10" step="0.1" data-tier-field="discountPercent" value="${t.discountPercent}"></div> 折
       <span class="tier-result" data-out="tierResult"></span>
       <button class="row-del" data-tier-action="delete">×</button></div>`;
   }
   function tieredFormHtml(p){
     const rows = p.promo.tiers.length===0 ? '<div class="list-empty">尚未新增折扣門檻</div>' : p.promo.tiers.map(tierRowHtml).join('');
-    return `<div data-out="tierRows">${rows}</div><button class="mini-add-btn" data-promo-action="addTier">＋ 新增折扣門檻</button>`;
+    return `<div class="adv-promo-note">折數用台灣習慣：填 9 代表「9折」＝原價的90%，填 8.5 代表「8.5折」＝原價的85%。</div><div data-out="tierRows">${rows}</div><button class="mini-add-btn" data-promo-action="addTier">＋ 新增折扣門檻</button>`;
   }
   function advPromoBodyHtml(p){
     let formHtml = '';
@@ -577,11 +548,10 @@
           <div class="floor-line hard"><span class="label">賠錢底線（成本＋抽成手續費）</span><span class="value mono" data-out="hardFloor"></span></div>
           <div class="floor-line soft"><span class="label">打平底線（含分攤固定成本／包底）</span><span class="value mono" data-out="softFloor"></span></div>
         </div>
-        <div class="staff-block">
-          <div class="staff-block-head">員工優惠（獨立試算）</div>
-          <div class="floor-line staff"><span class="label">員工優惠售價</span><span class="value mono" data-out="staffPrice"></span></div>
-          <div class="floor-line staff"><span class="sub" data-out="staffNote"></span></div>
-          <div class="field"><label>預估員工銷量</label><div class="input-wrap"><input type="number" min="0" step="1" data-field="staffEstQty" value="${p.staffEstQty}"><span>件</span></div></div>
+        <div class="sample-block">
+          <div class="sample-block-head">試吃品（自動加進固定成本）</div>
+          <div class="field"><label>預估試吃數量</label><div class="input-wrap"><input type="number" min="0" step="1" data-field="sampleQty" value="${p.sampleQty}"><span>份</span></div></div>
+          <div class="floor-line sample"><span class="label">這項試吃成本</span><span class="value mono" data-out="sampleCost"></span></div>
         </div>
         <div class="promo-block">
           <div class="promo-label"><span>單品促銷試算售價</span><span class="test-price mono" data-out="testPriceLabel"></span></div>
@@ -613,30 +583,25 @@
     card.querySelector('[data-out="softFloor"]').textContent = fmt(sf);
     card.querySelector('[data-out="testPriceLabel"]').textContent = fmt(p.testPrice);
 
-    const profit = unitProfit(p.testPrice, p.cost);
+    const rawProfit = unitProfit(p.testPrice, p.cost);
+    const trueProfit = rawProfit - fcpu;
     const badge = card.querySelector('[data-out="resultBadge"]');
     const text = card.querySelector('[data-out="resultText"]');
     const note = card.querySelector('[data-out="diffNote"]');
     badge.classList.remove('profit','loss');
-    if(profit>=0){ badge.classList.add('profit'); text.textContent='每件賺 '+fmt(profit); }
-    else{ badge.classList.add('loss'); text.textContent='每件賠 '+fmt(Math.abs(profit)); }
-    if(p.testPrice<hf) note.textContent='低於賠錢底線';
-    else if(p.testPrice<sf) note.textContent='未涵蓋分攤固定成本';
+    if(trueProfit>=0){ badge.classList.add('profit'); text.textContent='每件賺 '+fmt(trueProfit); }
+    else{ badge.classList.add('loss'); text.textContent='每件賠 '+fmt(Math.abs(trueProfit)); }
+    if(p.testPrice<hf) note.textContent='已低於賠錢底線，連成本都不夠（比沒打平更嚴重）';
+    else if(trueProfit<0) note.textContent='低於打平底線，沒打平這次活動的固定成本';
     else note.textContent='';
 
     const slider = card.querySelector('[data-field="testPrice"]');
     const desiredMax = Math.max(p.price*1.5,100);
     if(Number(slider.max)!==desiredMax) slider.max = desiredMax;
 
-    // staff price
-    const staffDiscount = Number(state.settings.staffDiscount)||0;
-    const staffPrice = getStaffPrice(p);
-    const staffProfit = getStaffUnitProfit(p);
-    card.querySelector('[data-out="staffPrice"]').textContent = fmt(staffPrice);
-    const staffNoteEl = card.querySelector('[data-out="staffNote"]');
-    if(staffDiscount<=0){ staffNoteEl.textContent='尚未設定員工優惠折扣'; staffNoteEl.style.color='var(--ink-soft)'; }
-    else if(staffProfit>=0){ staffNoteEl.textContent='每件仍賺 '+fmt(staffProfit); staffNoteEl.style.color='var(--green)'; }
-    else{ staffNoteEl.textContent='每件賠 '+fmt(Math.abs(staffProfit))+'（廠商吸收）'; staffNoteEl.style.color='var(--red)'; }
+    // sample cost
+    const sampleCost = (Number(p.cost)||0) * (Number(p.sampleQty)||0);
+    card.querySelector('[data-out="sampleCost"]').textContent = fmt(sampleCost);
 
     updatePromoResults(id);
   }
@@ -645,6 +610,9 @@
     const card = $(`.price-tag-card[data-id="${id}"]`); if(!card) return;
     const p = findProduct(id); if(!p) return;
     const hf = hardFloor(p.cost);
+    const fcpu = getFixedCostPerUnit();
+    const sf = softFloor(p.cost, fcpu);
+    const subNote = `<div style="font-size:11px;color:var(--ink-soft);margin-top:4px;">`;
 
     if(p.promo.type==='bxgy'){
       const r = calcBxgy(p);
@@ -652,33 +620,43 @@
       if(out){
         if(!r){ out.innerHTML = '請輸入付費件數'; }
         else{
-          const cls = r.avgPrice>=hf ? 'ok' : 'bad';
-          out.innerHTML = `整組共 <b>${r.totalUnits}</b> 件（送出後）<br>
-            平均每件實收 <b>${fmt(r.avgPrice)}</b>（賠錢底線 ${fmt(hf)}）<br>
-            這組整體 <span class="${r.profit>=0?'ok':'bad'}">${r.profit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.profit))}</b></span>，
-            平均每件 <span class="${cls}">${r.avgProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.avgProfit))}</b></span>`;
+          const trueProfit = r.profit - fcpu*r.totalUnits;
+          const trueAvgProfit = trueProfit/r.totalUnits;
+          const cashLoss = r.avgPrice < hf;
+          const cls = trueProfit>=0 ? 'ok' : 'bad';
+          out.innerHTML = `<span class="${cls}" style="font-size:13px;">這組整體（已扣分攤固定成本）${trueProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(trueProfit))}</b>，平均每件 ${trueAvgProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(trueAvgProfit))}</b></span>
+            ${cashLoss ? '<br><span class="bad">⚠ 平均每件已經低於賠錢底線，連成本都不夠</span>' : ''}
+            ${subNote}共 ${r.totalUnits} 件（送出後）／平均每件實收 ${fmt(r.avgPrice)}（賠錢底線 ${fmt(hf)} ／ 打平底線 ${fmt(sf)}）</div>`;
         }
       }
     }else if(p.promo.type==='addon'){
       const r = calcAddon(p);
       const out = card.querySelector('[data-out="addonResult"]');
       if(out){
-        const cls = r.addonUnitProfit>=0 ? 'ok' : 'bad';
-        out.innerHTML = `整組共 <b>${r.totalUnits}</b> 件（含加購）<br>
-          整組 <span class="${r.profit>=0?'ok':'bad'}">${r.profit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.profit))}</b></span>，
-          平均每件 <span class="${r.avgProfit>=0?'ok':'bad'}">${r.avgProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.avgProfit))}</b></span><br>
-          單看加購這件本身 <span class="${cls}">${r.addonUnitProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(r.addonUnitProfit))}</b></span>`;
+        const trueProfit = r.profit - fcpu*r.totalUnits;
+        const trueAvgProfit = trueProfit/r.totalUnits;
+        const addonTrueProfit = r.addonUnitProfit - fcpu;
+        const cashLoss = r.avgPrice < hf;
+        const cls = trueProfit>=0 ? 'ok' : 'bad';
+        const addonCls = addonTrueProfit>=0 ? 'ok' : 'bad';
+        out.innerHTML = `<span class="${cls}" style="font-size:13px;">整組（已扣分攤固定成本）${trueProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(trueProfit))}</b>，平均每件 ${trueAvgProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(trueAvgProfit))}</b></span><br>
+          單看加購這件本身（已扣分攤固定成本）<span class="${addonCls}">${addonTrueProfit>=0?'賺':'賠'} <b>${fmt(Math.abs(addonTrueProfit))}</b></span>
+          ${cashLoss ? '<br><span class="bad">⚠ 平均每件已經低於賠錢底線，連成本都不夠</span>' : ''}
+          ${subNote}共 ${r.totalUnits} 件（含加購）／平均每件實收 ${fmt(r.avgPrice)}（賠錢底線 ${fmt(hf)} ／ 打平底線 ${fmt(sf)}）</div>`;
       }
     }else if(p.promo.type==='tiered'){
       p.promo.tiers.forEach(t=>{
         const row = card.querySelector(`.tier-row[data-tier-id="${t.id}"]`);
         if(!row) return;
-        const tierPrice = (Number(p.price)||0) * (1-(Number(t.discountPercent)||0)/100);
-        const tierProfit = unitProfit(tierPrice, p.cost);
+        const tierPrice = (Number(p.price)||0) * (Number(t.discountPercent)||0)/10;
+        const rawProfit = unitProfit(tierPrice, p.cost);
+        const trueProfit = rawProfit - fcpu;
+        const cashLoss = tierPrice < hf;
         const resEl = row.querySelector('[data-out="tierResult"]');
-        resEl.classList.remove('ok','bad');
-        resEl.classList.add(tierProfit>=0?'ok':'bad');
-        resEl.textContent = fmt(tierPrice) + ' / 每件' + (tierProfit>=0?'賺':'賠') + fmt(Math.abs(tierProfit)).replace('NT$ ','');
+        resEl.classList.remove('ok','bad','warn');
+        resEl.classList.add(trueProfit>=0 ? 'ok' : 'bad');
+        resEl.title = cashLoss ? '已低於賠錢底線，連成本都不夠' : (trueProfit<0 ? '未涵蓋分攤固定成本' : '已扣分攤固定成本仍賺');
+        resEl.textContent = fmt(tierPrice).replace('NT$ ','NT$') + ' / 每件' + (trueProfit>=0?'賺':'賠') + fmt(Math.abs(trueProfit)).replace('NT$ ','') + (cashLoss ? ' ⚠' : '');
       });
     }
   }
@@ -689,6 +667,7 @@
     $('#totalRateDisplay').textContent = getTotalPercentRate().toFixed(1)+'%';
     $('#fixedBaseDisplay').textContent = fmt(getFixedCostBase());
     $('#guaranteedGapDisplay').textContent = fmt(getGuaranteedGap());
+    $('#sampleCostDisplay').textContent = fmt(getSampleCostTotal());
     $('#fixedTotalDisplay').textContent = fmt(getTotalFixedCost());
   }
 
@@ -709,8 +688,8 @@
     if(state.products.length===0){ status.textContent='尚未輸入商品資料'; return; }
 
     const net = grossProfit - fixedTotal;
-    if(net>=0){ bar.classList.add('profit'); status.classList.add('profit'); status.textContent='零售整檔預估賺 '+fmt(net); }
-    else{ bar.classList.add('loss'); status.classList.add('loss'); status.textContent='零售整檔預估賠 '+fmt(Math.abs(net)); }
+    if(net>=0){ bar.classList.add('profit'); status.classList.add('profit'); status.textContent='整檔預估賺 '+fmt(net); }
+    else{ bar.classList.add('loss'); status.classList.add('loss'); status.textContent='整檔預估賠 '+fmt(Math.abs(net)); }
 
     const avgMarginRate = totalRevenue>0 ? grossProfit/totalRevenue : 0;
     let extraHtml = '';
@@ -727,30 +706,7 @@
     extra.innerHTML = extraHtml;
   }
 
-  function updateStaffSummary(){
-    const qty = getTotalStaffQty();
-    const revenue = getTotalStaffRevenue();
-    const grossProfit = getTotalStaffGrossProfit();
-    $('#staffSumQty').textContent = fmtPlain(qty);
-    $('#staffSumRevenue').textContent = fmt(revenue);
-    $('#staffSumGrossProfit').textContent = fmt(grossProfit);
-
-    const bar = $('#staffSummaryBar'), status = $('#staffSummaryStatus');
-    status.classList.remove('profit','loss');
-    if(qty<=0){
-      status.textContent = '尚未輸入員工銷量';
-      return;
-    }
-    if(grossProfit>=0){
-      status.classList.add('profit');
-      status.textContent = '員工優惠預估賺 ' + fmt(grossProfit);
-    }else{
-      status.classList.add('loss');
-      status.textContent = '員工優惠預估賠 ' + fmt(Math.abs(grossProfit)) + '（廠商吸收）';
-    }
-  }
-
-  function recomputeAll(){ updateSettingsTotals(); updateAllCardComputed(); updateSummary(); updateStaffSummary(); }
+  function recomputeAll(){ updateSettingsTotals(); updateAllCardComputed(); updateSummary(); }
 
   // ---------- product grid events ----------
   function bindGridEvents(){
@@ -809,7 +765,7 @@
       if(addTierBtn){
         const card = addTierBtn.closest('.price-tag-card'); const id = card.dataset.id;
         const p = findProduct(id); if(!p) return;
-        p.promo.tiers.push({ id:'t'+(nextTierIdCounter++), minQty:2, discountPercent:10 });
+        p.promo.tiers.push({ id:'t'+(nextTierIdCounter++), minQty:2, discountPercent:9 });
         const out = card.querySelector('[data-out="advPromoBody"]');
         out.innerHTML = advPromoBodyHtml(p);
         updatePromoResults(id); scheduleSave(); return;
